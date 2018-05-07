@@ -1,0 +1,42 @@
+/* remove borders of images */
+.reveal section img { background:none; border:none; box-shadow:none; }
+
+.reveal pre code {
+    /* display: block; */
+    /* padding: 5px; */
+    /* overflow: auto; */
+    /* max-height: 700px; */
+    max-height: 80%;
+    line-height: 1.2em;
+    font-size: 1.1em;
+
+    /* word-wrap: normal; */
+
+}
+
+.reveal p ul ol item {
+    /* display: block; */
+    /* padding: 5px; */
+    /* overflow: auto; */
+    /* max-height: 700px; */
+    line-height: 1.4em;
+    font-size: 1.3em;
+    /* word-wrap: normal; */
+
+}
+
+.reveal notes {
+    /* display: block; */
+    /* padding: 5px; */
+    /* overflow: auto; */
+    /* max-height: 700px; */
+    line-height: .9em;
+    font-size: 0.8em;
+    /* word-wrap: normal; */
+
+}
+
+/* .reveal code { */
+/*     background: inherit; */
+/*     color: inherit; */
+/* } */

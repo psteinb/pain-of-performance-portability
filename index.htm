@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+        <meta name="author" content="Peter Steinbach" />
+            <title>Scionics - Data-Driven Consulting</title>
+    <meta name="description" content="Scionics - Data-Driven Consulting">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    
+    <link rel="stylesheet" href="css/reveal.css"/>
+        <link rel="stylesheet" href="css/theme/black.css">
+    
+        <link rel="stylesheet" href="lib/css/zenburn.css">
+    
+    <link rel="stylesheet" href="css/my_reveal_overrides.css" id="theme">
+    <!-- <link rel="stylesheet" href="my_reveal_overrides.css"/> -->
+    
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      	var link = document.createElement( 'link' );
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+    <!--[if lt IE 9]>
+	<script src="reveal.js/lib/js/html5shiv.js"></script>
+	<![endif]-->
+          </head>
+  <body>
+        <div class="reveal">
+      <div class="slides">
+
+		<section>
+	  <h1 class="title">Scionics - Data-Driven Consulting</h1>
+	  	  <p>
+	    <b>Peter Steinbach</b><br>
+	    <emph>(Scionics Computer Innovation GmbH)</emph><br>
+	    <a href="mailto:steinbach@scionics.de">steinbach@scionics.de</a>
+	    <br><br>
+	  </p>
+	  
+	  <h3 class="date">May 17, 2018, Airbus Defence</h3>
+	</section>
+		
+	<section><section id="real-life-performance-optimisation-is-never" class="titleslide slide level1"><h1>Real-life performance optimisation is never</h1></section><section id="as-simple-as-this" class="slide level2">
+<h1>as simple as this</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/allinea_performance_roadmap.jpg" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;70%&quot; }</p>
+</div>
+</div>
+</div>
+</section><section id="more-like-this" class="slide level2">
+<h1>more like this</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/dark_Odysseus_Journey_zoom.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+</div>
+</div>
+</section><section id="agenda" class="slide level2">
+<h1>Agenda</h1>
+<ol start="0" type="1">
+<li>Motivation</li>
+<li>Who-am-I</li>
+<li>Performance outside-in</li>
+<li>Performance inside-out</li>
+<li>Benchmarks and how to create them</li>
+</ol>
+</section></section>
+<section><section id="who-am-i-and-motivation" class="titleslide slide level1"><h1>Who-am-I and Motivation</h1></section><section id="who-am-i" class="slide level2">
+<h1>Who am I?</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/events_header_m_quarter.jpg" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;50%&quot; }</p>
+</div>
+<div class="col">
+<p><strong><a href="www.scionics.de">Scionics Computer Innovation GmbH</a></strong></p>
+<ul>
+<li>software and consulting company</li>
+<li>founded in 2001 in Dresden, Germany</li>
+<li>expertise in data analysis, bioinformatics, image analysis, HPC, ...</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>2h by car south of Berlin<br />
+</li>
+<li>NEXT: biggest client = CBG</li>
+</ul>
+</aside>
+</section><section id="our-client" class="slide level2">
+<h1>Our Client</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/800px-MPI-CBG_building_outside_4pl.jpg" alt="MPI for Molecular Cell Biology and Genetics" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+<p><a href="www.mpi-cbg.de">mpi-cbg.de</a></p>
+</div>
+<div class="col">
+<ul>
+<li>500+ staff</li>
+<li>my role: <em>Scientific Software Engineer</em></li>
+<li>support users on our HPC infrastructure</li>
+<li>software projects related to performance (think multi-threaded, GPUs, ..)</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>biggest client</li>
+<li>NEXT: How does my day look like sometimes ...</li>
+</ul>
+</aside>
+</section><section id="disclaimer" class="slide level2">
+<h1>Disclaimer</h1>
+<div class="container-fluid">
+<div class="row justify-content-center">
+<div class="col">
+<p><img src="img/opensource-550x475.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;40%&quot; }</p>
+<p><strong><a href="https://github.com/psteinb/parallel2018">github.com/psteinb/parallel2018</a></strong></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>report bugs and questions there!</p>
+</aside>
+</section><section id="before-i-begin" class="slide level2">
+<h1>Before I begin</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-8">
+<p><img src="img/Mars_Climate_Orbiter_2.jpg" alt="Mars Climate Orbiter (1998)" />{ class=&quot;figure-img img-fluid&quot; width=&quot;70%&quot; }</p>
+</div>
+<div class="col-4">
+<blockquote>
+<p>All of my slides assume, that the code provides correct results!</p>
+</blockquote>
+<div class="fragment">
+<blockquote>
+<p>Nobody wants fast code, that is wrong!</p>
+</blockquote>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section><section id="performance-outside-in" class="titleslide slide level1"><h1>Performance Outside-In</h1></section><section id="one-day-as-a-performance-engineer" class="slide level2">
+<h1>One day as a Performance Engineer</h1>
+<p><img src="img/flickr_ORourke_2_busy_to_improve_framed.png" alt="Alan O&#39;Rourke, Too Busy To Improve - Performance Management - Square Wheels, CC" />{ class=&quot;figure-img img-fluid&quot; width=&quot;70%&quot; }</p>
+<aside class="notes">
+<ul>
+<li>scientists typically develop algorithms (to publish)</li>
+<li>performance is important for usablity</li>
+</ul>
+</aside>
+</section><section id="once-in-a-while" class="slide level2" data-background-image="img/frustration-cry-1682140_1920.jpg">
+<h1>Once in a while</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-8">
+<pre><code>From: doe@theinstitute.de
+Subject: Cluster is slow
+Date: Fri, 20 Oct 2017 12:03:21 +0200
+To: hpcsupport@theinstitute.de
+
+Hi,
+
+what is going on with the cluster? My application is running
+slow since yesterday.
+Could you have a look at it please?
+
+Thanks,
+John</code></pre>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>speed is a subjective measure</li>
+<li>performance is a matter of perspective</li>
+<li>note: description for reproducibility missing</li>
+<li>https://youtu.be/FnGCDLhaxKU?t=6152</li>
+</ul>
+</aside>
+</section><section id="challenge-finding-the-performance-regression-without-looking-at-the-code" class="slide level2" data-background-image="img/traffic_jam_800px.png" data-background-position="right" style="background: rgba(105,105,105, 0.8); border-radius: 20px;">
+<h1>Challenge: Finding the performance regression without looking at the code</h1>
+<aside class="notes">
+<ul>
+<li>find the street with the traffic jam</li>
+<li>experience guided</li>
+</ul>
+</aside>
+</section><section id="high-level-overview" class="slide level2">
+<h1>High Level Overview</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/htop_in_action.png" alt="htop, free et al" />{ class=&quot;figure-img img-fluid&quot; width=&quot;90%&quot; }</p>
+</div>
+<div class="col">
+<p><img src="img/task_manager_small.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;80%&quot; }</p>
+</div>
+</div>
+</div>
+</section><section id="reference-numbers" class="slide level2">
+<h1>Reference Numbers</h1>
+<pre><code>$ dd if=/dev/zero of=/tmp/just_zeros bs=1G count=2
+2+0 records in
+2+0 records out
+2147483648 bytes (2.1 GB) copied, 2.94478 s, 729 MB/s
+
+$ dd if=/dev/zero of=/dev/shm/2gb.zeros bs=1G count=2
+2+0 records in
+2+0 records out
+2147483648 bytes (2.1 GB) copied, 1.14782 s, 1.9 GB/s</code></pre>
+<p> </p>
+<p><strong>What can your hardware typically do?</strong></p>
+<p>dd, <a href="http://www.nersc.gov/users/computational-systems/cori/nersc-8-procurement/trinity-nersc-8-rfp/nersc-8-trinity-benchmarks/ior/">ior</a>, memhog, <a href="https://www.cs.virginia.edu/stream/">stream</a>, ...</p>
+<aside class="notes">
+<ul>
+<li>to search for the bottleneck, know your performance without it</li>
+<li>guesstimate the bottleneck, cross check expected performance with a benchmark</li>
+</ul>
+<p>]</p>
+</section><section id="profile-with-perf" class="slide level2">
+<h1>Profile with <a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a></h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-9">
+<pre><code>$ perf record -g ./my-slow-binary
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.023 MB perf.data (75 samples) ]
+$ perf report --stdio
+no symbols found in /usr/bin/dd, maybe install a debug package?
+# ...
+# Total Lost Samples: 0
+#
+# Samples: 75  of event &#39;cycles:u&#39;
+# Event count (approx.): 1839654
+#
+# Children      Self  Command  Shared Object      Symbol           
+# ........  ........  .......  .................  ................
+#
+    20.18%    20.18%  dd       [kernel.kallsyms]  [k] page_fault
+            |          
+             --19.77%--0
+                       _int_realloc
+                       page_fault</code></pre>
+</div>
+<div class="col-3">
+<ul>
+<li>lightweight sample based profiling</li>
+<li>per task, per CPU and per-workload counters</li>
+<li>sample CPU performance counters, tracepoints or system probes</li>
+<li>on windows: <a href="https://docs.microsoft.com/en-us/windows-hardware/test/wpt/wpt-getting-started-portal">xperf</a>/<a href="https://github.com/google/UIforETW">UIforETW</a></li>
+</ul>
+</div>
+</div>
+</div>
+</section><section id="perf-what-is-a-callstack" class="slide level2">
+<h1>perf: what is a callstack?</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><object type="image/svg+xml" data="figure/stacktrace_illustration/stacktrace_dark.svg" width="40%"> Your browser does not support SVG </object></p>
+</div>
+</div>
+</div>
+</section><section id="perf-sampling-based-profiling" class="slide level2">
+<h1>perf: sampling based profiling</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-8">
+<p><object type="image/svg+xml" data="figure/stacktrace_illustration/stacktrace_dark_with_traces.svg" width="60%"> Your browser does not support SVG </object></p>
+</div>
+<div class="col-4">
+<ul>
+<li>for every sampling event:
+<ul>
+<li>record call stack</li>
+<li>query hardware counters, e.g. cpu-cycles</li>
+</ul></li>
+<li>sampling must not be accurate</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>hardware counters = low overhead</li>
+<li>missing accuracy != problem on nondeterministic system</li>
+</ul>
+</aside>
+</section><section id="perf-reloaded-with-flamegraphs" class="slide level2">
+<h1><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> Reloaded with <a href="https://github.com/brendangregg/FlameGraph">FlameGraphs</a></h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-8">
+<pre><code>$ perf record -g ./my-slow-binary
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.023 MB perf.data (75 samples) ]
+$ perf script &gt; out.perf
+$ ./stackcollapse-perf.pl out.perf &gt; out.folded
+$ ./flamegraph.pl out.folded &gt; perf_samples.svg</code></pre>
+</div>
+<div class="col-4">
+<ul>
+<li>visualisation technique conceived by <a href="https://github.com/brendangregg">Brendan Gregg</a> (Netflix)</li>
+<li>seamless integration into perf, dtrace, systemtap, XCode Instruments, Lightweight Java Profiler, Microsoft Visual Studio profiles, ...</li>
+<li>based on collected counter samples and the stacktrace they were collected in</li>
+</ul>
+</div>
+</div>
+</div>
+</section><section id="ethereum-mining-as-flamegraph" class="slide level2">
+<h1>Ethereum Mining <a href="figure/flamegraph/ethminer-cuda-simulate.svg">as FlameGraph</a></h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><object type="image/svg+xml" data="figure/flamegraph/ethminer-cuda-simulate.svg" width="90%"> Your browser does not support SVG </object></p>
+</div>
+</div>
+</div>
+<div class="container-fluid">
+<div class="row align-items-start">
+<div class="col">
+<ul>
+<li>(x axis) current stack level in alphabetical order</li>
+</ul>
+</div>
+<div class="col">
+<ul>
+<li>(y axis) number of samples in that stacktrace level</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>alphetical ordering inside each stacktrace level</li>
+</ul>
+</aside>
+</section><section id="hpc-users-slow-application" class="slide level2">
+<h1>HPC user's slow application</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><object type="image/svg+xml" data="figure/flamegraph/hpc_user.svg" width="90%"> Your browser does not support SVG </object></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>this graph = cpu_cycles; alternative = i/o flamegraph</li>
+<li><strong>so far</strong>: didn't touch the source code or build it</li>
+</ul>
+</aside>
+</section><section id="bottom-line" class="slide level2" data-background-image="img/balloon.jpeg" style="background: rgba(105,105,105, 0.8); border-radius: 20px;">
+<h1>Bottom Line</h1>
+<p>Taking a balloon to get an overview of performance bottlenecks is possible.</p>
+</section></section>
+<section><section id="performance-inside-out" class="titleslide slide level1" data-background-image="img/cable_chaos.jpg" style="background: rgba(105,105,105, 0.8); border-radius: 20px;"><h1>Performance Inside-Out</h1></section><section id="high-diversity-of-tools" class="slide level2" data-background-image="img/dreamstime-in-c++.jpg" data-background-position="right" style="background: rgba(105,105,105, 0.8); border-radius: 20px;">
+<h1>High Diversity of Tools!</h1>
+<aside class="notes">
+<ul>
+<li>tricky to recommend one only</li>
+<li>tricky to find cross platform one</li>
+<li>typical: develop/profile on one platform, choose deploy on all</li>
+<li>now: brief tour</li>
+</ul>
+</aside>
+</section><section id="valgrind-kcachegrind" class="slide level2">
+<h1><a href="valgrind.org">valgrind</a> + kcachegrind</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/kcachegrind-screenshot.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;80%&quot; }</p>
+</div>
+</div>
+</div>
+<p>Profile from <a href="https://github.com/petergottschling/discovering_modern_cpp/blob/master/c%2B%2B11/vector_unroll_example.cpp">Peter Gottschling's example on vector unrolling</a>.</p>
+<aside class="notes">
+<ul>
+<li>pseudo-vm is the only way to obtain a line profile in C++</li>
+<li>x86 translated to RISC-like syntax <code>UCode</code></li>
+<li>heavy performace hit</li>
+</ul>
+</aside>
+</section><section id="simple-graphical-output-perftools" class="slide level2">
+<h1>Simple Graphical output, <a href="https://github.com/gperftools/gperftools">perftools</a></h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="figure/profiling/perftools/pprof21143.0.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;90%&quot; }</p>
+</div>
+</div>
+</div>
+<p>Profile from <a href="https://github.com/petergottschling/discovering_modern_cpp/blob/master/c%2B%2B11/vector_unroll_example.cpp">Peter Gottschling's example on vector unrolling</a>.</p>
+<aside class="notes">
+<ul>
+<li>results can be converted to kcachegrind compatible format</li>
+<li>small performace hit</li>
+</ul>
+</aside>
+</section><section id="using-flamegraphs-hotspot" class="slide level2">
+<h1>Using flamegraphs, <a href="https://www.kdab.com/hotspot-gui-linux-perf-profiler/">hotspot</a></h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/hotspot.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;80%&quot; }</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>thanks to Millian Wolff (KDAB)</li>
+<li>well done OSS tool with bright future</li>
+</ul>
+</aside>
+</section><section id="xray" class="slide level2">
+<h1><a href="https://llvm.org/docs/XRay.html">xray</a></h1>
+<pre><code>$ CXX=clang++ make
+
+$ XRAY_OPTIONS=&quot;patch_premain=true xray_mode=xray-basic verbosity=1&quot; 
+$ ./vector_unroll_example
+==31936==XRay: Log file in &#39;xray-log.vector_unroll_example.ju4PNk&#39;
+Compute time native loop is 0.159 micros.
+u[0] is 15
+#...
+
+$ llvm-xray account xray-log.vector_unroll_example.ju4PNk -instr_map=./vector_unroll_example
+nctions with latencies: 5
+ funcid      count [      min,       med,       90p,  ...]       sum  function    
+      1          1 [ 7.338530,  7.338530,  7.338530,  ...]  7.338530  &lt;invalid&gt;:0:0: main
+      2       1275 [ 0.000005,  0.000011,  0.000012,  ...]  0.013064  &lt;invalid&gt;:0:0: void my_axpy&lt;2u, vector&lt;float&gt;, vector&lt;float&gt;, vector&lt;float&gt; &gt;(vector&lt;float&gt;&amp;, vector&lt;float&gt; const&amp;, vector&lt;float&gt; const&amp;)</code></pre>
+<aside class="notes">
+<ul>
+<li>introduced in llvm4</li>
+<li>flamegraph output available since llvm6</li>
+<li>latency focussed</li>
+</ul>
+</aside>
+</section><section id="proprietary-tools" class="slide level2">
+<h1>Proprietary tools</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/intel_advisor_2017.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;80%&quot; }</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>excellent tool from the docs</li>
+<li>would love to afford it</li>
+<li>NEXT: hotspot found</li>
+</ul>
+</aside>
+</section><section id="found-a-hot-spot" class="slide level2" data-background-image="img/1024px_light-bulb-light-old.jpg" data-background-position="right">
+<h1>Found a hot spot!</h1>
+<aside class="notes">
+<ul>
+<li>search finished, critical function/class identified</li>
+<li>NOW: find out why it is slow?</li>
+</ul>
+</aside>
+</section><section id="danger-zone-of-mental-models" class="slide level2" data-background-image="img/slip-up-danger-careless-slippery.jpg" data-background-position="right" style="background: rgba(105,105,105, 0.8); border-radius: 20px;">
+<h1>Danger zone of mental models</h1>
+<aside class="notes">
+<ul>
+<li>mental models are often wrong or outdated</li>
+<li>with a colleaque or rubber duck, come up with falsifyable hypothesis!</li>
+</ul>
+</aside>
+</section><section id="inspect-assembly" class="slide level2">
+<h1>Inspect Assembly?</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/compiler_explorer.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>inspecting assembly tough!</li>
+<li>play with -O flags to get a feeling</li>
+<li>mental hardware model can still be wrong</li>
+<li>asm can only partially falsify hypothesis</li>
+</ul>
+</aside>
+</section><section id="perf-for-hardware-exploration" class="slide level2">
+<h1>perf for hardware exploration?</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-9">
+<pre><code>$ perf list
+
+List of pre-defined events (to be used in -e):
+
+  branch-instructions OR branches                    [Hardware event]
+  branch-misses                                      [Hardware event]
+  bus-cycles                                         [Hardware event]
+  cache-misses                                       [Hardware event]
+  cache-references                                   [Hardware event]
+  cpu-cycles OR cycles                               [Hardware event]
+  instructions                                       [Hardware event]
+  ref-cycles                                         [Hardware event]
+  stalled-cycles-frontend OR idle-cycles-frontend    [Hardware event]
+  #...
+  L1-dcache-load-misses                              [Hardware cache event]
+  L1-dcache-loads                                    [Hardware cache event]
+  L1-dcache-prefetch-misses                          [Hardware cache event]
+  L1-dcache-store-misses                             [Hardware cache event]
+  L1-dcache-stores                                   [Hardware cache event]
+  L1-icache-load-misses                              [Hardware cache event]
+  #...</code></pre>
+</div>
+<div class="col-3">
+<ul>
+<li>perf event list depends on kernel version</li>
+<li>hardware counters are not portable (specification change by vendors)</li>
+<li>alternative: <a href="https://github.com/andikleen/pmu-tools">ocperf</a></li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>I prefer LIKWID</li>
+</ul>
+</aside>
+</section><section id="test-hypothesis-with-likwid" class="slide level2">
+<h1>Test hypothesis with <a href="https://github.com/RRZE-HPC/likwid">likwid</a></h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/likwid-repo.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;90%&quot; }</p>
+</div>
+</div>
+</div>
+<div class="container-fluid">
+<div class="row align-items-start">
+<div class="col">
+<ul>
+<li><a href="https://github.com/RRZE-HPC/likwid">github.com/RRZE-HPC/likwid</a></li>
+<li>open source Performance monitoring and benchmarking suite</li>
+<li>Linux only</li>
+</ul>
+</div>
+<div class="col">
+<ul>
+<li>profiling through hardware counters (consistent meta markers for portability)</li>
+<li>exploration through monitoring</li>
+<li>marker API for C, C++, java and python</li>
+</ul>
+</div>
+</div>
+</div>
+</section><section id="use-case-index-lists" class="slide level2">
+<h1>use case: Index Lists</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-9">
+<pre><code>#include &lt;vector&gt;
+#include &quot;omp.h&quot;
+
+struct item{
+    std::vector&lt;float&gt; position, momentum;
+    std::vector&lt;int&gt;   nearest_neighbors;}
+
+int main(int argc, char** argv){
+    std::vector&lt;item&gt; world = generate(argc*10e6);
+    
+    for(int&amp; time_step : timelapse){
+        update(world);
+        
+        #pragma omp parallel for
+        for(item&amp; it : world){
+            for(int&amp; index : it.nearest_neighbors){
+                auto distance = calculate(it, world[index]);
+                if(distance &gt; threshold)
+                    it.nearest_neighbors.remove(index);
+            }}}
+    //..
+}</code></pre>
+</div>
+<div class="col-3">
+<ul>
+<li><p><strong>hypotheses</strong>:</p>
+<ul>
+<li><p>large 'unpredictable' jumps in memory access diminishes cache bandwidth</p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/False_sharing">false sharing</a> forces cache line reloads as read-only and writable items may share the same cache line</p></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<p>Let's measure!</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>code has a lot of problems related to memory layout</li>
+<li>index of nearest neighbor <code>item</code> stored in vector</li>
+<li>only show measurement for false sharing for brevity</li>
+</ul>
+</aside>
+</div>
+</section><section id="use-case-through-likwid" class="slide level2">
+<h1>use case: Through Likwid</h1>
+<div class="container-fluid">
+<div class="row align-items-start">
+<div class="col-6">
+<p>Use Case</p>
+<pre><code># export OMP_NUM_THREADS=1
+# path/to/likwid-perfctr -f -c 0 -g FALSE_SHARE \
+numactl -m0 -C0 ./my_app
++----------------------------------|--------------+
+|              Metric              |    Core 0    |
++----------------------------------|--------------+
+//..
+|  Local LLC false sharing [MByte] |       0.0008 |
+|   Local LLC false sharing rate   | 5.608215e-10 |
+//..
++----------------------------------|--------------+
+
+# export OMP_NUM_THREADS=4
+# path/to/likwid-perfctr -f -c 0-4 -g FALSE_SHARE \
+numactl -m0 -C0-3 ./my_app
++---------------------------------------|--------------|
+|                 Metric                |      Sum     |
++---------------------------------------|--------------|
+#..
+|  Local LLC false sharing [MByte] STAT |    2973.7637 |
+|   Local LLC false sharing rate STAT   |       0.0081 |
+#..
++---------------------------------------|--------------|</code></pre>
+</div>
+<div class="col-6">
+<p>Stream Benchmark as Reference</p>
+<pre><code># export OMP_NUM_THREADS=1
+# path/to/likwid-perfctr -f -c 0 -g FALSE_SHARE \
+numactl -m0 -C0 ./stream
++----------------------------------|--------------+
+|              Metric              |    Core 0    |
++----------------------------------|--------------+
+#..
+|  Local LLC false sharing [MByte] |       0.0006 |
+|   Local LLC false sharing rate   | 6.057282e-10 |
+#..
++----------------------------------|--------------+
+
+# export OMP_NUM_THREADS=4
+# path/to/likwid-perfctr -f -c 0-4 -g FALSE_SHARE \
+numactl -m0 -C0-3 ./stream
++---------------------------------------|--------------|
+|                 Metric                |      Sum     |
++---------------------------------------|--------------|
+#..
+|  Local LLC false sharing [MByte] STAT |       0.1067 |
+|   Local LLC false sharing rate STAT   | 4.080027e-07 |
+#..
++---------------------------------------|--------------|</code></pre>
+</div>
+</div>
+</div>
+</section><section id="bottom-line-1" class="slide level2">
+<h1>Bottom Line</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<ul>
+<li>excellent tools available to find hot spots</li>
+<li>once &quot;found&quot;, talk to someone<br />
+(rubber duck or colleaque(s))</li>
+<li>create falsifiable hypotheses</li>
+<li>MEASURE!</li>
+</ul>
+</div>
+<div class="col">
+<p><img src="img/rubber_duck_with_glasses.jpg" alt="&quot;Rubber Duckie, You&#39;re the One&quot;, by Daniel Rothamel, CC-BY 2.0" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>NEXT: let's find alternative code paths (algorithms/technology)</li>
+</ul>
+</aside>
+</section></section>
+<section><section id="benchmarks-and-how-to-create-them" class="titleslide slide level1" data-background-image="img/dark_Odysseus_Journey_500less_1200px.png" style="margin-top: -200px; background: rgba(1,21,26, 0.8); border-radius: 20px;"><h1>Benchmarks and how to create them</h1></section><section id="faster-code" class="slide level2">
+<h1>faster code?</h1>
+<p><a href="https://youtu.be/FnGCDLhaxKU?t=6143">Chandler Carruth, Understanding Compiler Optimization, MeetingCPP 2015</a></p>
+<blockquote>
+<p>Klaus Iglberger: Guys that do know a lot about performance, do a lot of manual unrolling (manual vectorization). Apparently they don't trust the compiler too much. What is your take on this?</p>
+</blockquote>
+<div class="fragment">
+<blockquote>
+<p>Chandler: How do you define &quot;people who know a lot about performance&quot;? Serious question. So I work with Google's optimisation team who is responsible for making our C++ code run fast. And I have never seen them manually unroll a loop.</p>
+</blockquote>
+</div>
+</section><section id="chrono-is-your-friend" class="slide level2">
+<h1>chrono is your friend</h1>
+<pre><code>#include &lt;chrono&gt;
+#include &lt;iostream&gt;
+#include &quot;production_code.hpp&quot;
+#include &quot;new_ideas.hpp&quot;
+
+int main(int argc, char** argv){
+
+    auto start = std::chrono::high_resolution_clock::now();
+    auto result = production_code::algorithm();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration&lt;double&gt; t_p = (end - start);
+    
+    start = std::chrono::high_resolution_clock::now();
+    auto new_result = new_ideas::algorithm();
+    end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration&lt;double&gt; t_i = (end - start);
+
+    std::cout &lt;&lt; &quot;we achieved a speed-up of &quot; &lt;&lt; t_p.count()/t_i.count() 
+              &lt;&lt; std::endl;
+              
+    return 0;
+}</code></pre>
+</section><section id="check-for-correctness" class="slide level2">
+<h1>... check for correctness</h1>
+<pre><code>#include &lt;chrono&gt;
+#include &lt;iostream&gt;
+#include &quot;production_code.hpp&quot;
+#include &quot;new_ideas.hpp&quot;
+
+int main(int argc, char** argv){
+
+    auto start = std::chrono::high_resolution_clock::now();
+    auto result = production_code::algorithm();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration&lt;double&gt; t_p = (end - start);
+    
+    start = std::chrono::high_resolution_clock::now();
+    auto new_result = new_ideas::algorithm();
+    end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration&lt;double&gt; t_i = (end - start);
+
+    if(result == new_result)
+        std::cout &lt;&lt; &quot;we achieved a speed-up of &quot; &lt;&lt; t_p.count()/t_i.count() 
+                  &lt;&lt; std::endl;
+    else
+        std::cout &lt;&lt; &quot;Never mind!&quot; &lt;&lt; std::endl;
+}</code></pre>
+</section><section id="noisy-lab-under-your-fingers" class="slide level2">
+<h1>noisy lab under your fingers</h1>
+<pre><code>#include ...
+
+int main(int argc, char** argv){
+
+    auto result = 0;
+    auto new_result = 0;
+    
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for(int i = 0;i&lt;n_repetitions;++i)
+        result = production_code::algorithm();
+   
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration&lt;double&gt; t_p = (end - start);
+    
+    start = std::chrono::high_resolution_clock::now();
+    
+    for(int i = 0;i&lt;n_repetitions;++i)
+        new_result = new_ideas::algorithm();
+        
+    end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration&lt;double&gt; t_i = (end - start);
+
+    if(result == new_result)
+        std::cout &lt;&lt; &quot;we achieved a speed-up of &quot; &lt;&lt; t_p.count()/t_i.count() 
+                  &lt;&lt; std::endl;
+    else
+        std::cout &lt;&lt; &quot;Never mind!&quot; &lt;&lt; std::endl;
+}</code></pre>
+</section><section id="please-take-notes" class="slide level2">
+<h1>Please take notes</h1>
+<pre><code>#include ...
+
+using duration_t = std::chrono::duration&lt;double&gt;;
+
+int main(int argc, char** argv){
+    //..
+    auto start = std::chrono::high_resolution_clock::now();
+    auto end = start;
+    std::vector&lt;duration_t&gt; my_timings(n_repetitions);
+
+    for(int i = 0;i&lt;n_repetitions;++i){
+        start = std::chrono::high_resolution_clock::now();
+        result = production_code::algorithm();
+        my_timings[i] = std::chrono::high_resolution_clock::now() - start;
+    }
+   
+    //same with new_result = new_ideas::algorithm()
+
+    if(result == new_result){
+        std::ofstream ofile(&quot;results.csv&quot;);ofile.open();
+        for(int i = 0;i&lt;n_repetitions;++i){
+            ofile &lt;&lt; i &lt;&lt; &quot;,production,&quot; &lt;&lt; prod_timings[i].count() &lt;&lt; &quot;,seconds&quot; &lt;&lt; std::endl;
+        }
+        //same with new_idea
+        ofile.close()
+    }
+    else
+        std::cout &lt;&lt; &quot;Never mind!&quot; &lt;&lt; std::endl;
+}</code></pre>
+</section><section id="why" class="slide level2">
+<h1>Why?</h1>
+<blockquote>
+<p>... It's a simple Python interface around a blazing fast C++ library ...</p>
+</blockquote>
+<p><a href="https://github.com/vincentlaucsb/csvmorph">from github.com/vincentlaucsb/csvmorph</a></p>
+<p> </p>
+<blockquote>
+<p>... However C++ code used to be significantly faster for a long time, and also today still is in many cases.</p>
+</blockquote>
+<p><a href="https://stackoverflow.com/a/138406">from SO &quot;How much faster is C++ than C#?&quot;</a></p>
+<p><strong><a href="http://lmgtfy.com/?q=C%2B%2B+faster">see more for youself!</a></strong></p>
+<aside class="notes">
+<ul>
+<li>people expect C++ to be faster!!</li>
+</ul>
+</aside>
+</section><section id="life-as-a-reviewer" class="slide level2">
+<h1>Life as a reviewer</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/hoefler_scientific_benchmarking_table1.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+<p>T. Hoefler et al, <a href="https://dl.acm.org/citation.cfm?id=2807644">&quot;Scientific Benchmarking of Parallel Computing Systems - Twelve ways to tell the masses when reporting performance results&quot;</a>, <br>SC '15 Proceedings, 2015</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>reviewer for conference proceedings related to GPU programming</li>
+<li>very often: results are not reproducible and not based on ensemble's mean+variance</li>
+</ul>
+</aside>
+</section><section id="lets-take-a-toy-example" class="slide level2">
+<h1>Let's take a toy example</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/quick_bench_example.png" alt="quick-bench.com" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>great tool!!</li>
+<li>use results with a grain of salt</li>
+</ul>
+</aside>
+</section><section id="what-if" class="slide level2">
+<h1>... what if</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="figure/quick_bench_mock.png" alt="Ensemble variances tell a story!" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>again: great tool!!</li>
+</ul>
+</aside>
+</section><section id="standardized-easy-to-parse-output" class="slide level2">
+<h1>Standardized, easy-to-parse output!</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/hoefler_scientific_benchmarking_fig1.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;70%&quot; }</p>
+<p>T. Hoefler et al, <a href="https://dl.acm.org/citation.cfm?id=2807644">&quot;Scientific Benchmarking of Parallel Computing Systems - Twelve ways to tell the masses when reporting performance results&quot;</a>, <br>SC '15 Proceedings, 2015</p>
+</div>
+<div class="col-4">
+<blockquote>
+<p>Can't this be automated?</p>
+</blockquote>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>statistics offer much more feature rich interpretation</li>
+<li>allows reproducibility of results</li>
+<li>allows choice of tools for interpretation (Rmarkdown, jupyter notebooks, ...)</li>
+<li>fight the in-silico crisis</li>
+</ul>
+</aside>
+</section><section id="googlebenchmark" class="slide level2">
+<h1>google/benchmark</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="img/libbenchmark_repo.png" alt="github.com/google/benchmark" />{ class=&quot;figure-img img-fluid&quot; width=&quot;85%&quot; }</p>
+</div>
+</div>
+</div>
+<p> </p>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<ul>
+<li>written in C++11/C++03</li>
+<li>support of multi-threaded applications</li>
+<li>powerful CLI</li>
+</ul>
+</div>
+<div class="col">
+<ul>
+<li>easy setup of (templated) test cases</li>
+<li>flexible argument control</li>
+<li>custom counters/timers</li>
+</ul>
+</div>
+</div>
+</div>
+</section><section id="benchmark-in-action" class="slide level2">
+<h1>benchmark: in action</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-8">
+<p><img src="img/cppcon_godbolt_reduction.png" alt="Matt Godbolt at CppCon2017" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+<div class="col">
+<p><strong>Question:</strong></p>
+<blockquote>
+<p>Are range-based for loops faster than integer based ones depending on the data type used?</p>
+</blockquote>
+</div>
+</div>
+</div>
+</section><section id="benchmark-simple-approach" class="slide level2">
+<h1>benchmark: simple approach</h1>
+<div class="container-fluid">
+<div class="row align-items-start">
+<div class="col-6">
+<pre><code>#include &lt;benchmark/benchmark.h&gt;
+#include &lt;vector&gt;
+
+template &lt;typename T&gt;
+double sum(const T* _data, std::size_t _len){
+
+    double value = 0;
+    for(std::size_t i = 0;i&lt;_len;++i)
+        value += _data[i];
+
+    return value;
+}
+
+template &lt;typename container_type&gt;
+double sum(const container_type&amp; _data){
+
+    typedef typename container_type::value_type value_t;
+
+    double value = 0;
+    for(const value_t&amp; el : _data)
+        value += el;
+
+    return value;
+}</code></pre>
+</div>
+<div class="col-6">
+<pre><code>static void BM_integer_index(benchmark::State&amp; state) {
+
+    const std::size_t len = 1 &lt;&lt; 20;
+    std::vector&lt;int&gt; values(len,0.f);
+    double result = 0;
+
+    for (auto _ : state){
+        benchmark::DoNotOptimize(result = sum(values.data(), len));
+    }
+}
+// Register the function as a benchmark
+BENCHMARK(BM_integer_index);
+
+static void BM_range_based(benchmark::State&amp; state) {
+
+    const std::size_t len = 1 &lt;&lt; 20;
+    std::vector&lt;int&gt; values(len,0.f);
+    double result = 0;
+
+    for (auto _ : state){
+        benchmark::DoNotOptimize(result = sum(values));
+    }
+
+}
+BENCHMARK(BM_range_based);
+
+BENCHMARK_MAIN();</code></pre>
+</div>
+</div>
+</div>
+</section><section id="benchmark-simple-approach-output" class="slide level2">
+<h1>benchmark: simple approach output</h1>
+<pre><code>Run on (4 X 3600 MHz CPU s)
+2017-11-08 10:24:43
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+--------------------------------------------------------
+Benchmark                 Time           CPU Iterations
+--------------------------------------------------------
+BM_integer_index     922920 ns     915531 ns        764
+BM_range_based       937344 ns     929681 ns        768</code></pre>
+</section><section id="benchmark-advanced" class="slide level2">
+<h1>benchmark: advanced</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-7">
+<pre><code>template &lt;typename T&gt;
+static void BM_integer_index(benchmark::State&amp; state) {
+
+    const std::size_t len = state.range(0);
+    std::vector&lt;T&gt; values(len,0.f);
+    double result = 0;
+
+    for (auto _ : state){
+        benchmark::DoNotOptimize(result = sum(values.data(), len));
+    }
+}
+
+BENCHMARK_TEMPLATE(BM_integer_index,int)
+-&gt;Arg(64)
+-&gt;Arg(512)
+-&gt;Arg(1 &lt;&lt; 10)
+-&gt;Arg(128&lt;&lt;10)
+-&gt;Arg(1&lt;&lt;20)
+-&gt;Arg(128&lt;&lt;20);
+BENCHMARK_TEMPLATE(BM_integer_index,float)
+-&gt;Arg(64)
+-&gt;Arg(512)
+-&gt;Arg(1 &lt;&lt; 10)
+-&gt;Arg(128&lt;&lt;10)
+-&gt;Arg(1&lt;&lt;20)
+-&gt;Arg(128&lt;&lt;20);
+
+BENCHMARK_MAIN();</code></pre>
+</div>
+<div class="col">
+<ul>
+<li><p>multiple arguments are also supported</p>
+<pre><code>BENCHMARK_TEMPLATE(BM_integer_index,int)
+//42 is the initial value of the reduced sum
+-&gt;Arg({64, 42})
+//..
+;</code></pre></li>
+<li>templated benchmark cases are supported</li>
+<li><p>workflow:</p></li>
+</ul>
+<div class="fragment">
+<ol type="1">
+<li>build benchmark <br> (different working set sizes, types)</li>
+<li>compile with varying flags</li>
+<li>run &amp; inspect</li>
+<li>render report with <a href="https://github.com/rstudio/rmarkdown">rmarkdown</a></li>
+</ol>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>too bad: fixtures and templated benchmarks are lacking</li>
+</ul>
+</aside>
+</div>
+</section><section id="benchmark-advanced-output" class="slide level2">
+<h1>benchmark: advanced output</h1>
+<pre><code>Run on (4 X 3600 MHz CPU s)
+2017-11-08 10:25:27
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+-------------------------------------------------------------------------
+Benchmark                                  Time           CPU Iterations
+-------------------------------------------------------------------------
+BM_integer_index&lt;int&gt;/64                  50 ns         50 ns   10000000
+BM_integer_index&lt;int&gt;/512                424 ns        423 ns    1634359
+BM_integer_index&lt;int&gt;/1024               864 ns        861 ns     772101
+BM_integer_index&lt;int&gt;/131072          112125 ns     111777 ns       6344
+BM_integer_index&lt;int&gt;/1048576         924382 ns     916717 ns        761
+BM_integer_index&lt;int&gt;/134217728    123700290 ns  122614766 ns          6
+BM_integer_index&lt;float&gt;/64                52 ns         51 ns   13374011
+BM_integer_index&lt;float&gt;/512              427 ns        425 ns    1641151
+BM_integer_index&lt;float&gt;/1024             863 ns        860 ns     772552
+BM_integer_index&lt;float&gt;/131072        111322 ns     111160 ns       6109
+BM_integer_index&lt;float&gt;/1048576       914593 ns     909174 ns        763
+BM_integer_index&lt;float&gt;/134217728  122954355 ns  122219776 ns          6
+BM_range_based&lt;int&gt;/64                    50 ns         50 ns   13580124
+BM_range_based&lt;int&gt;/512                  429 ns        429 ns    1570356
+BM_range_based&lt;int&gt;/1024                 866 ns        865 ns     815042
+BM_range_based&lt;int&gt;/131072            111289 ns     111139 ns       6316
+BM_range_based&lt;int&gt;/1048576           912475 ns     907277 ns        761
+BM_range_based&lt;int&gt;/134217728      122509880 ns  121832332 ns          6
+BM_range_based&lt;float&gt;/64                  48 ns         48 ns   13944707
+BM_range_based&lt;float&gt;/512                426 ns        426 ns    1637659
+BM_range_based&lt;float&gt;/1024               863 ns        862 ns     810743
+BM_range_based&lt;float&gt;/131072          110915 ns     110775 ns       6343
+BM_range_based&lt;float&gt;/1048576         917501 ns     912365 ns        735
+BM_range_based&lt;float&gt;/134217728    122908318 ns  122219268 ns          6
+</code></pre>
+</section><section id="benchmark-reproduce-this" class="slide level2">
+<h1>benchmark: reproduce this!</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><img src="src/libbenchmark/comparison_O2.png" alt="gcc 6.4.1, libbbenchmark 1.3, code available in this repo" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+<div class="col">
+<ul>
+<li>file an <a href="https://github.com/psteinb/meetingcpp2017">issue</a> if you reproduced this!</li>
+</ul>
+<pre><code>$ cd /path/to/sliderepo/src/libbenchmark
+$ //install libbenchmark &amp; tidyverse R package
+$ CXXFLAGS=-O2 make report
+$ my-browser report.html</code></pre>
+</div>
+</div>
+</div>
+</section><section id="there-is-more" class="slide level2">
+<h1>There is more</h1>
+<table>
+<colgroup>
+<col style="width: 30%" />
+<col style="width: 7%" />
+<col style="width: 25%" />
+<col style="width: 37%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><a href="https://github.com/nickbruun/hayai">nickbruun/hayai</a></td>
+<td style="text-align: center;">229</td>
+<td style="text-align: left;">- based on googletest <br> - random order <br> - fixture support</td>
+<td style="text-align: left;">- no csv output <br> - online docs? commit activity?<br> - no donotoptimize <br> - max/min/means reported by default</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><a href="https://github.com/DigitalInBlue/Celero">DigitalInBlue/celero</a></td>
+<td style="text-align: center;">249</td>
+<td style="text-align: left;">- no dependencies <br> - baseline <br> - fixture support</td>
+<td style="text-align: left;">- no csv output <br> - means reported by default</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><a href="https://nonius.io/">nonius.io</a></td>
+<td style="text-align: center;">49-194</td>
+<td style="text-align: left;">- header-only <br> - depends on boost <br> - super statistics summary</td>
+<td style="text-align: left;">- confusing repo structure <br> - buggy example(s) <br> - confidence intervals fixed to <br> normal distribution <br> - no donotoptimize</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><a href="https://github.com/google/benchmark">google/benchmark</a></td>
+<td style="text-align: center;">1985</td>
+<td style="text-align: left;">- no dependencies <br> - feature rich</td>
+<td style="text-align: left;">- templated versus fixture based setup <br> - means reported by default</td>
+</tr>
+</tbody>
+</table>
+</section><section id="where-to-stop" class="slide level2">
+<h1>Where to stop?</h1>
+<ul>
+<li><strong>clearify upfront</strong></li>
+<li>where is your limit?
+<ul>
+<li>hardware</li>
+<li>APIs and libraries</li>
+<li>dependencies</li>
+<li>compiler</li>
+<li>OS</li>
+</ul></li>
+</ul>
+</section><section id="roofline" class="slide level2">
+<h1>roofline</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-8">
+<p><img src="img/overview-mmm-illustrator.pdf.png" alt="G. Ofenbeck, &quot;Applying the Roofline Model&quot;, ISPASS&#39;14 proceedings, 2014" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+<div class="col">
+<ul>
+<li>acknowledge boundaries of algorithm</li>
+<li>differentiate &quot;work&quot; versus &quot;traffic&quot;</li>
+<li>simplistic: bottleneck is either work or traffic</li>
+<li>clear indication where optimisations go</li>
+</ul>
+</div>
+</div>
+</div>
+</section><section id="roofline-for-real" class="slide level2">
+<h1>roofline for real</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-8">
+<p><img src="img/gearshifft_results_r2c_vs_c2c_a.png" alt="complex vs. real FFT transforms" />{ class=&quot;figure-img img-fluid&quot; width=&quot;70%&quot; }</p>
+</div>
+<div class="col">
+<p><em><a href="https://github.com/mpicbg-scicomp/gearshifft">gearshifft</a> FFT benchmark</em></p>
+<ul>
+<li>co-authored with TU Dresden</li>
+<li>note the variances!</li>
+<li>published at ISC'17</li>
+</ul>
+</div>
+</div>
+</div>
+</section><section id="rooline-tooling-kerncraft" class="slide level2">
+<h1>rooline tooling: <a href="https://github.com/RRZE-HPC/kerncraft">kerncraft</a></h1>
+<pre><code>$ cat /tmp/add.c
+double a[N], b[N], c[N];
+
+for(int i=0; i&lt;N; ++i)
+    a[i] = b[i] + c[i];
+</code></pre>
+<div class="fragment">
+<pre><code>$ kerncraft  -p Roofline -m /tmp/IvyBridgeEP_E5-2660v2.yml \
+  /tmp/add.c -D N 1000
+                                     kerncraft                                    
+/tmp/add.c                                     -m /tmp/IvyBridgeEP_E5-2660v2.yml
+-D N 1000
+----------------------------------- Roofline -----------------------------------
+Cache or mem bound with 1 core(s)
+2.02 GFLOP/s due to L1 transfer bottleneck (bw with from copy benchmark)
+Arithmetic Intensity: 0.04 FLOP/B</code></pre>
+<div class="container-fluid">
+<div class="row align-items-start">
+<div class="col-6">
+<ul>
+<li>Loop Kernel Analysis and Performance Modeling Toolkit</li>
+<li>static code analysis to infer data reuse and cache requirements</li>
+</ul>
+</div>
+<div class="col-6">
+<ul>
+<li>can infer in-core and memory bottlenecks</li>
+<li>apply performance models to benchmarked data</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section><section id="bottom-line-2" class="slide level2" data-background-image="img/pacman-games.jpg" style="margin-top: -200px; background: rgba(1,21,26, 0.8); border-radius: 20px;">
+<h1>Bottom Line</h1>
+<ul>
+<li>your requirements are your guiding light in the dungeon</li>
+<li>reproducible ensemble based benchmarks are key</li>
+</ul>
+</section></section>
+<section><section id="summary" class="titleslide slide level1"><h1>Summary</h1></section><section id="take-aways" class="slide level2">
+<h1>Take aways</h1>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-4">
+<p><img src="img/balloon.jpeg" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+<div class="col-4">
+<p><img src="img/rubber_duck_with_glasses.jpg" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+<div class="col-4">
+<p><img src="img/pacman-games.jpg" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;100%&quot; }</p>
+</div>
+</div>
+</div>
+<div class="container-fluid">
+<div class="row align-items-start">
+<div class="col-4">
+<p><strong>Take a balloon:</strong></p>
+<p>Use Tools to check the lay of the land.</p>
+</div>
+<div class="col-4">
+<p><strong>Falsify the rubber duck:</strong></p>
+<p>Profile and check your hypothesis.</p>
+</div>
+<div class="col-4">
+<p><strong>Survive the dungeon</strong></p>
+<p>With automated ensemble based benchmarks.</p>
+</div>
+</div>
+</div>
+</section><section id="final-words" class="slide level2">
+<h1>Final Words</h1>
+<blockquote>
+<p><em>C++ is a language considered &quot;fast&quot;.</em></p>
+</blockquote>
+<div class="fragment">
+<blockquote>
+<p>We, the community, need to live up to this standard and have robust and reproducible performance numbers!</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p> </p>
+<p><em>Thank you for your attention!</em></p>
+</div>
+</section></section>
+<section><section id="backup" class="titleslide slide level1"><h1>Backup</h1></section><section id="section" class="slide level2">
+<h1></h1>
+<p><img src="img/sum_of_int_vs_float.png" alt="" />{ class=&quot;figure-img img-fluid&quot; width=&quot;75%&quot; }</p>
+</section><section id="textual-output-gprof" class="slide level2">
+<h1>Textual output, gprof</h1>
+<pre><code>$ g++ -pg -O2 -std=c++11 vector_unroll_example.cpp
+$ ./a.out
+$ gprof ./a.out gmon.out &gt; analysis.txt
+$ head analysis.txt
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  Ts/call  Ts/call  name    
+ 26.71      1.02     1.02                             void my_axpy&lt;6u, vector&lt;float&gt;, vector&lt;float&gt;, vector&lt;float&gt; &gt;(vector&lt;float&gt;&amp;, vector&lt;float&gt; const&amp;, vector&lt;float&gt; const&amp;)
+ 26.71      2.05     1.02                             void my_axpy&lt;2u, vector&lt;float&gt;, vector&lt;float&gt;, vector&lt;float&gt; &gt;(vector&lt;float&gt;&amp;, vector&lt;float&gt; const&amp;, vector&lt;float&gt; const&amp;)
+ 23.83      2.96     0.91                             void my_axpy&lt;8u, vector&lt;float&gt;, vector&lt;float&gt;, vector&lt;float&gt; &gt;(vector&lt;float&gt;&amp;, vector&lt;float&gt; const&amp;, vector&lt;float&gt; const&amp;)
+ 23.04      3.84     0.88                             void my_axpy&lt;4u, vector&lt;float&gt;, vector&lt;float&gt;, vector&lt;float&gt; &gt;(vector&lt;float&gt;&amp;, vector&lt;float&gt; const&amp;, vector&lt;float&gt; const&amp;)
+  0.00      3.84     0.00        1     0.00     0.00  _GLOBAL__sub_I_main</code></pre>
+<p>Profile from <a href="https://github.com/petergottschling/discovering_modern_cpp/blob/master/c%2B%2B11/vector_unroll_example.cpp">Peter Gottschling's example on vector unrolling</a>.</p>
+</section></section>
+      </div>
+    </div>
+
+
+    <script src="lib/js/head.min.js"></script>
+    <script src="js/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+      controls: false,
+      progress: true,
+      history: true,
+      center: true,
+      
+      slideNumber: true,
+      // The "normal" size of the presentation, aspect ratio will be preserved
+      // when the presentation is scaled to fit different resolutions. Can be
+      // specified using percentage units.
+      width: 1920,
+      height: 1080,
+
+      // Factor of the display size that should remain empty around the content
+      margin: 0.01,
+
+      // Bounds for smallest/largest possible scale to apply to content
+      minScale: 0.2,
+      maxScale: 1.5,
+
+      transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+      backgroundTransition: 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [
+      //{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      
+      { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'plugin/notes/notes.js', async: true }//,
+      //          { src: 'plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; }, }
+      //          { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]});
+    </script>
+      </body>
+</html>
