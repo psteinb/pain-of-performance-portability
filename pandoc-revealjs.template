@@ -71,7 +71,7 @@
 	  <p>
 	    <b>$author$</b><br>
 	    <emph>($origin$)</emph><br>
-	    <a href="mailto:$email$">$email$</a>
+	    <a href="mailto:$email$">$email$</a>, <a href="https://twitter.com/$twitter$">@$twitter$</a>
 	    <br><br>
 	  </p>
 	  
