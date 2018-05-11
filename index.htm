@@ -205,12 +205,14 @@ Movie does not work! Sorry!
 <h2>Big Data!</h2>
 <p>by <a href="https://commons.wikimedia.org/wiki/File:Panic_button.jpg">John</a>, CC BY-SA 2.0</p>
 </section></section>
-<section><section id="compression" class="titleslide slide level1"><h1>Compression</h1></section><section id="lempelzivwelch" class="slide level2">
-<h2>Lempel–Ziv–Welch</h2>
+<section><section id="compression" class="titleslide slide level1"><h1>Compression</h1></section><section id="lempelzivwelch-algorithm" class="slide level2">
+<h2>Lempel–Ziv–Welch Algorithm</h2>
 <ul>
+<li>dictionary based losslessl compression</li>
 <li>at the heart of many compression algorithms today</li>
 <li>DEFLATE = LZW + huffman encoding</li>
 <li>ZIP, PNG, TIFF ...</li>
+<li><a href="https://github.com/lz4/lz4">lz4</a>, <a href="https://github.com/facebook/zstd">zstandard</a>, ...</li>
 </ul>
 </section><section id="example" class="slide level2">
 <h2>Example</h2>
@@ -355,6 +357,7 @@ Movie does not work! Sorry!
 <ul>
 <li>TOB unknown, add to dict</li>
 <li>TO known, emit 27</li>
+<li><span class="class fragment highlight-red">1 symbol, 2 characters</span></li>
 </ul>
 </div>
 <div class="col">
@@ -368,6 +371,31 @@ Movie does not work! Sorry!
 ...
 &#39;TT&#39; : 0x23 {35}
 &#39;TOB&#39;: 0x24 {36}</code></pre>
+</div>
+</div>
+</div>
+</section><section id="lzw-final" class="slide level2">
+<h2>LZW Final</h2>
+<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
+{20}{15}{2}{5}{15}{18}{14}{15}{20}{27}{29}{31}{36}{30}{32}{34}{0}</code></pre>
+<div class="fragment">
+<p> </p>
+<div class="container-fluid">
+<div class="row align-items-top">
+<div class="col">
+<ul>
+<li>alphabet of 26+1 characters<br />
+(capital letters + stop code #)</li>
+<li>alphabet can be represented by <span class="math inline">2<sup>5</sup></span> values</li>
+</ul>
+</div>
+<div class="col">
+<pre><code>&#39;#&#39; : 0x0 {0}
+&#39;A&#39; : 0x1 {1}
+&#39;B&#39; : 0x2 {2}
+...
+&#39;Z&#39; : 0x1a {26}</code></pre>
+</div>
 </div>
 </div>
 </div>

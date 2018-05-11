@@ -241,11 +241,14 @@ by [John](https://commons.wikimedia.org/wiki/File:Panic_button.jpg), CC BY-SA 2.
 
 # Compression
 
-## Lempel–Ziv–Welch
+## Lempel–Ziv–Welch Algorithm
 
+- dictionary based losslessl compression
 - at the heart of many compression algorithms today
 - DEFLATE = LZW + huffman encoding
 - ZIP, PNG, TIFF ...
+- [lz4](https://github.com/lz4/lz4), [zstandard](https://github.com/facebook/zstd), ...
+
 
 ## Example
 
@@ -511,6 +514,45 @@ dictionary:
 ...
 'TT' : 0x23 {35}
 'TOB': 0x24 {36}
+```
+
+.]
+
+.]
+
+.]
+
+## LZW Final
+
+```{style="font-size: 1.25em"}
+TOBEORNOTTOBEORTOBEORNOT#
+{20}{15}{2}{5}{15}{18}{14}{15}{20}{27}{29}{31}{36}{30}{32}{34}{0}
+```
+
+. . . 
+
+&nbsp;
+
+.container-fluid[
+
+.row align-items-top[
+
+.col[
+
+- original:  25 symbols × 5 bits/symbol = 125 bits
+- encoded :  (6 codes × 5 bits/code) + (11 codes × 6 bits/code) = 96 bits
+
+
+.]
+
+.col[
+
+```
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
+...
+'EOR': 0x28 {40}
+'RNO': 0x29 {41}
 ```
 
 .]
