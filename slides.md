@@ -17,12 +17,61 @@ date: May 16, 2018, Advanced Developers Conference (Burghausen)
 5. Sqeazy
 6. Portable Performance
 
-## Open-Source 
+
+## Disclaimer
+
+.container-fluid[
+
+.row justify-content-center[
+
+  .col[
+
+![](img/opensource-550x475.png){ class="figure-img img-fluid" width="40%" }  
+
+**[github.com/psteinb/pain-of-performance-portability](https://github.com/psteinb/pain-of-performance-portability)**
+
+
+  .]
+
+.]
+
+.]
+
+
+:notes[
+
+report bugs and questions there!
+
+:]
 
 
 # About me
 
 ## [Scionics Computer Innovation GmbH](https://www.scionics.de)
+
+.container-fluid[
+
+.row align-items-center[
+
+.col[
+
+![](img/scionics_main_logo.png){ class="figure-img img-fluid" width="70%" }
+
+.]
+
+.col[
+
+- founded in 2001
+- located in Dresden, Saxony (Germany)
+- currently 35 staff
+- consulting and software products for industry and academia
+
+.]
+
+.]
+
+.]
+
 
 
 ## Max-Planck Institute for Molecular Cell Biology and Genetics
@@ -35,7 +84,7 @@ date: May 16, 2018, Advanced Developers Conference (Burghausen)
 
 ![](img/800px-MPI-CBG_building_outside_4pl.jpg){ class="figure-img img-fluid" height="50%" }  
 
-[Services at Max Planck Institute of Molecular Cell Biology and Genetics](https://www.mpi-cbg.de) (MPI CBG), 500 staff
+[Max Planck Institute of Molecular Cell Biology and Genetics](https://www.mpi-cbg.de) (MPI CBG), 500 staff
 
 .]
 
@@ -54,12 +103,40 @@ date: May 16, 2018, Advanced Developers Conference (Burghausen)
 
 :notes[
 
-- my role
 - employer = Scionics
+- NEXT: my role
 
 :]
 
+
 ## My Role
+
+.container-fluid[
+
+.row align-items-top[
+
+.col[
+
+HPC  
+
+![](img/madmax_high_800h.jpg){ class="figure-img img-fluid" }  
+
+.]
+
+.col[
+
+Performance  
+
+![by [Sergey Ignatchenko](http://ithare.com/c-performance-common-wisdoms-and-common-wisdoms/)](img/premature_optimisation.png){ class="figure-img img-fluid" }  
+
+
+.]
+
+.]
+
+.]
+
+
 
 # 3D Microscopy
 

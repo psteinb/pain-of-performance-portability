@@ -24,3 +24,6 @@ present :
 prepare :
     #installs all nodejs dependencies in this directory
 	npm install
+
+stage_images:
+	git add -f `grep '\!\[\]' ./slides.md|sed -e 's@.*](\(.*\)).*@\1@'`
