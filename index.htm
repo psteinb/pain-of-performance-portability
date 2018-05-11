@@ -376,33 +376,64 @@ Movie does not work! Sorry!
 </div>
 </section><section id="lzw-final" class="slide level2">
 <h2>LZW Final</h2>
-<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
+<pre><code>TOBEORNOTTOBEORTOBEORNOT#
 {20}{15}{2}{5}{15}{18}{14}{15}{20}{27}{29}{31}{36}{30}{32}{34}{0}</code></pre>
 <div class="fragment">
 <p> </p>
 <div class="container-fluid">
 <div class="row align-items-top">
-<div class="col">
+<div class="col-8">
 <ul>
-<li>alphabet of 26+1 characters<br />
-(capital letters + stop code #)</li>
-<li>alphabet can be represented by <span class="math inline">2<sup>5</sup></span> values</li>
+<li>original:<br />
+25 symbols × 5 b/symbol = 125 b</li>
+<li>encoded :<br />
+(6 codes × 5 b/code) + (11 codes × 6 b/code) = <strong>96 b</strong></li>
 </ul>
 </div>
-<div class="col">
-<pre><code>&#39;#&#39; : 0x0 {0}
-&#39;A&#39; : 0x1 {1}
-&#39;B&#39; : 0x2 {2}
+<div class="col-4">
+<pre><code>&#39;#&#39;  : 0x0  {0}
+&#39;A&#39;  : 0x1  {1}
 ...
-&#39;Z&#39; : 0x1a {26}</code></pre>
+&#39;EOR&#39;: 0x28 {40}
+&#39;RNO&#39;: 0x29 {41}</code></pre>
 </div>
 </div>
 </div>
 </div>
 </section><section id="lz4-and-friends" class="slide level2">
 <h2>LZ4 and friends</h2>
-</section><section id="but-...-on-16bit-data" class="slide level2">
-<h2>But ... on 16bit data?</h2>
+<ul>
+<li>upspur of new and fast compression libraries in the last years
+<ul>
+<li>lz4 by Yann Collet</li>
+<li>zstd by Yann Collet (Facebook)</li>
+<li><a href="https://github.com/google/brotli">brotli</a> by google</li>
+</ul></li>
+</ul>
+<p><a href="https://quixdb.github.io/squash-benchmark/"><img src="img/squash-comparison.png" alt="quixdb.github.io/squash-benchmark" /></a></p>
+</section><section id="on-our-16bit-data" class="slide level2">
+<h2>On our 16bit data?</h2>
+<p>lz4</p>
+<pre><code>/dev/shm $ time lz4 spim_sample.tif                              
+Compressed filename will be : mit_sample.tif.lz4 
+Compressed 423637504 bytes into 302613798 bytes ==&gt; 71.43%                     
+lz4 spim_sample.tif  1.28s user 0.18s system 99% cpu 1.470 total</code></pre>
+<p>405MB file, 289MB encoded, <span class="class fragment highlight-red">316 MB/s</span> ingest</p>
+<div class="fragment">
+<p> </p>
+<p>zstd</p>
+<pre><code>/dev/shm $ time zstd spim_sample.tif
+mit_sample.tif       : 44.11%   (423637504 =&gt; 186867090 bytes, mit_sample.tif.zst) 
+zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total</code></pre>
+<p>405MB file, 179MB encoded, <span class="class fragment highlight-red">102 MB/s</span> ingest</p>
+<aside class="notes">
+<ul>
+<li>speed versus compression ratio trade-off</li>
+<li>requirements are high!</li>
+<li>16bit data (yields gaps)</li>
+</ul>
+</aside>
+</div>
 </section></section>
 <section><section id="sqeazy" class="titleslide slide level1"><h1>Sqeazy</h1></section><section id="requirements" class="slide level2">
 <h2>Requirements</h2>

@@ -247,7 +247,6 @@ by [John](https://commons.wikimedia.org/wiki/File:Panic_button.jpg), CC BY-SA 2.
 - at the heart of many compression algorithms today
 - DEFLATE = LZW + huffman encoding
 - ZIP, PNG, TIFF ...
-- [lz4](https://github.com/lz4/lz4), [zstandard](https://github.com/facebook/zstd), ...
 
 
 ## Example
@@ -524,7 +523,7 @@ dictionary:
 
 ## LZW Final
 
-```{style="font-size: 1.25em"}
+```
 TOBEORNOTTOBEORTOBEORNOT#
 {20}{15}{2}{5}{15}{18}{14}{15}{20}{27}{29}{31}{36}{30}{32}{34}{0}
 ```
@@ -537,15 +536,17 @@ TOBEORNOTTOBEORTOBEORNOT#
 
 .row align-items-top[
 
-.col[
+.col-8[
 
-- original:  25 symbols × 5 bits/symbol = 125 bits
-- encoded :  (6 codes × 5 bits/code) + (11 codes × 6 bits/code) = 96 bits
+- original:  
+25 symbols × 5 b/symbol = 125 b
+- encoded :  
+(6 codes × 5 b/code) + (11 codes × 6 b/code) = **96 b**
 
 
 .]
 
-.col[
+.col-4[
 
 ```
 '#'  : 0x0  {0}
@@ -564,9 +565,53 @@ TOBEORNOTTOBEORTOBEORNOT#
 
 ## LZ4 and friends
 
+- upspur of new and fast compression libraries in the last years
+    + lz4 by Yann Collet
+    + zstd by Yann Collet (Facebook)
+    + [brotli](https://github.com/google/brotli) by google
+    ...
+    
+[![quixdb.github.io/squash-benchmark](img/squash-comparison.png)](https://quixdb.github.io/squash-benchmark/)
 
-## But ... on 16bit data?
+:notes[
 
+- squash: largest dataset = 95MB text
+
+:]
+  
+## On our 16bit data?
+
+lz4
+```
+/dev/shm $ time lz4 spim_sample.tif                              
+Compressed filename will be : mit_sample.tif.lz4 
+Compressed 423637504 bytes into 302613798 bytes ==> 71.43%                     
+lz4 spim_sample.tif  1.28s user 0.18s system 99% cpu 1.470 total
+```
+405MB file, 289MB encoded, [316 MB/s]{.class class="fragment highlight-red"}  ingest
+
+
+. . .
+
+&nbsp;
+
+zstd
+```
+/dev/shm $ time zstd spim_sample.tif
+mit_sample.tif       : 44.11%   (423637504 => 186867090 bytes, mit_sample.tif.zst) 
+zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total
+```
+405MB file, 179MB encoded, [102 MB/s]{.class class="fragment highlight-red"} ingest
+
+
+:notes[
+
+- speed versus compression ratio trade-off
+- requirements are high!
+- 16bit data (yields gaps)
+- NEXT: compression+preprocessing
+
+:]
 
 
 # Sqeazy
