@@ -513,8 +513,73 @@ char* encoded_end = pipe.encode(input.data(),
 </aside>
 </section><section id="sqeazy-pipelines" class="slide level2">
 <h2>Sqeazy Pipelines</h2>
-</section><section id="async-alloc" class="slide level2">
-<h2>Async Alloc</h2>
+<pre><code>template &lt;
+    typename raw_t,
+    template&lt;typename = raw_t&gt; class filter_factory_t = default_filter_factory,
+    typename inbound_sink_factory_t = default_sink_factory&lt;raw_t&gt;,
+    typename optional_tail_factory_t = void
+    &gt;
+  struct dynamic_pipeline
+{
+
+    std::vector&lt;std::shared_ptr&lt;base_stage&lt;raw_t&gt; &gt; &gt; stages;
+
+}</code></pre>
+<aside class="notes">
+<ul>
+<li>first attempt: static pipelines with Boost.MTL</li>
+<li>pipeline object checks if stages fit</li>
+<li>KISS</li>
+<li>NEXT: Temporaries</li>
+</ul>
+</aside>
+</section><section id="a-need-for-temporaries" class="slide level2">
+<h2>A Need for Temporaries?</h2>
+<pre><code>out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_t shape){
+
+   header_t hdr(in_type(), shape, this-&gt;name());
+   char* start_here = std::copy(hdr.c_str(),hdr.c_str()+hdr.size(),
+                                    static_cast&lt;char*&gt;(encoded));
+                                    
+   for( stage_t stage : stages ){
+   
+        stage.encode(raw,encoded,shape);
+        std::swap(raw,encoded);
+   
+   }
+
+}</code></pre>
+<aside class="notes">
+<ul>
+<li>rough draft of core functionality</li>
+<li>problem: output never of constant size ( encoder overhead, meta data )</li>
+<li>allocating temporaries consumes resources</li>
+</ul>
+</aside>
+</section><section id="latency-hiding" class="slide level2">
+<h2>Latency Hiding</h2>
+<pre><code>template &lt;typename T&gt;
+using unique_array = std::unique_ptr&lt;T[], boost::alignment::aligned_delete&gt;;
+
+out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_t shape){
+
+   std::future&lt;unique_array&lt;incoming_t&gt;&gt; temp = std::async(make_aligned&lt;incoming_t&gt;,
+                                                           std::size_t(32),
+                                                           scratchpad_bytes);
+
+   header_t hdr(in_type(), shape, this-&gt;name());
+   char* start_here = std::copy(hdr.c_str(),hdr.c_str()+hdr.size(),
+                                    static_cast&lt;char*&gt;(encoded));
+   
+   encoded = temp.get();
+   for( int s = 0; s&lt; stages.size();++s){
+   
+        stage.encode(raw,encoded,shape);
+        std::swap(raw,encoded);
+   
+   }
+
+}</code></pre>
 </section><section id="algorithms" class="slide level2">
 <h2>Algorithms</h2>
 </section></section>

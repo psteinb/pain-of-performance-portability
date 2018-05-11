@@ -752,11 +752,69 @@ template <
 :]
 
 
-## A Need for Temporaries
+## A Need for Temporaries?
 
+```
+out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_t shape){
 
+   header_t hdr(in_type(), shape, this->name());
+   char* start_here = std::copy(hdr.c_str(),hdr.c_str()+hdr.size(),
+                                    static_cast<char*>(encoded));
+                                    
+   for( stage_t stage : stages ){
+   
+        stage.encode(raw,encoded,shape);
+        std::swap(raw,encoded);
+   
+   }
 
-## Algorithms
+}
+```
+
+:notes[
+
+- rough draft of core functionality
+- problem: output never of constant size 
+( encoder overhead, meta data )
+- allocating temporaries consumes resources
+
+:]
+
+## Latency Hiding
+
+```
+template <typename T>
+using unique_array = std::unique_ptr<T[], boost::alignment::aligned_delete>;
+
+out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_t shape){
+
+   std::future<unique_array<incoming_t>> temp = std::async(make_aligned<incoming_t>,
+                                                           std::size_t(32),
+                                                           scratchpad_bytes);
+
+   header_t hdr(in_type(), shape, this->name());
+   char* start_here = std::copy(hdr.c_str(),hdr.c_str()+hdr.size(),
+                                    static_cast<char*>(encoded));
+   
+   encoded = temp.get();
+   for( int s = 0; s< stages.size();++s){
+   
+        stage.encode(raw,encoded,shape);
+        std::swap(raw,encoded);
+   
+   }
+
+}
+```
+
+:notes[
+
+- overhead of allocations mitigated
+- pipeline that does nothing ~ memcpy speed
+- HERE: coding with performance
+- NEXT: performance
+
+:]
 
 
 # Portable Performance
