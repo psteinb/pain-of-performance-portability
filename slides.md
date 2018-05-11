@@ -618,17 +618,146 @@ zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total
 
 ## Requirements
 
+.container-fluid[
+
+.row justify-content-center[
+
+  .col[
+
+- provide compression at 500 MB/s or more
+- target:
+    + lossless: 3x or more
+    + lossy: 10x or more
+    
+  .]
+
+.col[
+
+- support 16 and 8-bit data types
+- go multi-core
+- Linux, macOS and /Win7/
+- redistributable binary
+- flexible pipeline definition
+- interface to Java
+
+.]
+
+
+.]
+
+.]
+
+. . . 
+
+
+[**Good Luck!**]{.class style="font-size: 1.5em; color: yellow;"}
+
+
+:notes[
+
+- NEXT: why pipelines?
+
+:]
+
+
 ## Bitshuffle
 
-## (Blos-c)
+Original (6 pixel values of 16 bit)
 
-## Algorithms
+```
+                9                 1                 2                12             56013             36742
+00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110
+```
+
+Bitplane 0
+
+```
+                9                 1                 2                12             56013             36742
+00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110
+^                 ^                 ^                 ^                 ^                 ^
+-> 000011
+```
+
+Bitplane 15
+
+```
+                9                 1                 2                12             56013             36742
+00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110
+                ^                 ^                 ^                 ^                 ^                 ^
+-> 110010
+```
+
+original: 140MB, lz4-only: 114MB, bitshuffle+lz4: 60MB
+    
 
 ## Pipelining
 
-## Pipeline Temporaries
+On the command-line:
 
-## Async Alloc
+```
+$ sqy encode -p 'bitswap1->lz4' my.tif
+```
+
+From Java:
+
+```
+final Pointer<Byte> bPipelineName = Pointer.pointerToCString("bitswap->lz4");
+SqeazyLibrary.SQY_PipelineEncode_UI16(bPipelineName,lSourceBytes,
+									  lSourceShape,3,
+									  lCompressedBytes,lPointerToDestinationLength,
+									  1)
+```
+
+Internal C++:
+
+```
+auto pipe = sqeazy::dynamic_pipeline<std::uint16_t>::from_string("bitswap1->lz4");
+char* encoded_end = pipe.encode(input.data(),
+                                encoded.data(),
+                                shape);
+```
+
+:notes[
+
+- pipelines important to reshape/filter data
+- 
+
+:]
+
+
+## Sqeazy Pipelines
+
+```
+template <
+    typename raw_t,
+    template<typename = raw_t> class filter_factory_t = default_filter_factory,
+    typename inbound_sink_factory_t = default_sink_factory<raw_t>,
+    typename optional_tail_factory_t = void
+    >
+  struct dynamic_pipeline
+{
+
+    std::vector<std::shared_ptr<base_stage<raw_t> > > stages;
+
+}
+```
+
+:notes[
+
+- first attempt: static pipelines with Boost.MTL
+- pipeline object checks if stages fit
+- KISS
+- NEXT: Temporaries
+
+:]
+
+
+## A Need for Temporaries
+
+
+
+## Algorithms
+
 
 # Portable Performance
 

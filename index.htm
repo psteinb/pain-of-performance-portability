@@ -212,7 +212,6 @@ Movie does not work! Sorry!
 <li>at the heart of many compression algorithms today</li>
 <li>DEFLATE = LZW + huffman encoding</li>
 <li>ZIP, PNG, TIFF ...</li>
-<li><a href="https://github.com/lz4/lz4">lz4</a>, <a href="https://github.com/facebook/zstd">zstandard</a>, ...</li>
 </ul>
 </section><section id="example" class="slide level2">
 <h2>Example</h2>
@@ -407,10 +406,15 @@ Movie does not work! Sorry!
 <ul>
 <li>lz4 by Yann Collet</li>
 <li>zstd by Yann Collet (Facebook)</li>
-<li><a href="https://github.com/google/brotli">brotli</a> by google</li>
+<li><a href="https://github.com/google/brotli">brotli</a> by google ...</li>
 </ul></li>
 </ul>
 <p><a href="https://quixdb.github.io/squash-benchmark/"><img src="img/squash-comparison.png" alt="quixdb.github.io/squash-benchmark" /></a></p>
+<aside class="notes">
+<ul>
+<li>squash: largest dataset = 95MB text</li>
+</ul>
+</aside>
 </section><section id="on-our-16bit-data" class="slide level2">
 <h2>On our 16bit data?</h2>
 <p>lz4</p>
@@ -431,24 +435,88 @@ zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total</code></pre>
 <li>speed versus compression ratio trade-off</li>
 <li>requirements are high!</li>
 <li>16bit data (yields gaps)</li>
+<li>NEXT: compression+preprocessing</li>
 </ul>
 </aside>
 </div>
 </section></section>
 <section><section id="sqeazy" class="titleslide slide level1"><h1>Sqeazy</h1></section><section id="requirements" class="slide level2">
 <h2>Requirements</h2>
+<div class="container-fluid">
+<div class="row justify-content-center">
+<div class="col">
+<ul>
+<li>provide compression at 500 MB/s or more</li>
+<li>target:
+<ul>
+<li>lossless: 3x or more</li>
+<li>lossy: 10x or more</li>
+</ul></li>
+</ul>
+</div>
+<div class="col">
+<ul>
+<li>support 16 and 8-bit data types</li>
+<li>go multi-core</li>
+<li>Linux, macOS and /Win7/</li>
+<li>redistributable binary</li>
+<li>flexible pipeline definition</li>
+<li>interface to Java</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><span class="class" style="font-size: 1.5em; color: yellow;"><strong>Good Luck!</strong></span></p>
+<aside class="notes">
+<ul>
+<li>NEXT: why pipelines?</li>
+</ul>
+</aside>
+</div>
 </section><section id="bitshuffle" class="slide level2">
 <h2>Bitshuffle</h2>
-</section><section id="blos-c" class="slide level2">
-<h2>(Blos-c)</h2>
-</section><section id="algorithms" class="slide level2">
-<h2>Algorithms</h2>
+<p>Original (6 pixel values of 16 bit)</p>
+<pre><code>                9                 1                 2                12             56013             36742
+00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110</code></pre>
+<p>Bitplane 0</p>
+<pre><code>                9                 1                 2                12             56013             36742
+00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110
+^                 ^                 ^                 ^                 ^                 ^
+-&gt; 000011</code></pre>
+<p>Bitplane 15</p>
+<pre><code>                9                 1                 2                12             56013             36742
+00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110
+                ^                 ^                 ^                 ^                 ^                 ^
+-&gt; 110010</code></pre>
+<p>original: 140MB, lz4-only: 114MB, bitshuffle+lz4: 60MB</p>
 </section><section id="pipelining" class="slide level2">
 <h2>Pipelining</h2>
-</section><section id="pipeline-temporaries" class="slide level2">
-<h2>Pipeline Temporaries</h2>
+<p>On the command-line:</p>
+<pre><code>$ sqy encode -p &#39;bitswap1-&gt;lz4&#39; my.tif</code></pre>
+<p>From Java:</p>
+<pre><code>final Pointer&lt;Byte&gt; bPipelineName = Pointer.pointerToCString(&quot;bitswap-&gt;lz4&quot;);
+SqeazyLibrary.SQY_PipelineEncode_UI16(bPipelineName,lSourceBytes,
+                                      lSourceShape,3,
+                                      lCompressedBytes,lPointerToDestinationLength,
+                                      1)</code></pre>
+<p>Internal C++:</p>
+<pre><code>auto pipe = sqeazy::dynamic_pipeline&lt;std::uint16_t&gt;::from_string(&quot;bitswap1-&gt;lz4&quot;);
+char* encoded_end = pipe.encode(input.data(),
+                                encoded.data(),
+                                shape);</code></pre>
+<aside class="notes">
+<ul>
+<li>pipelines important to reshape/filter data</li>
+<li></li>
+</ul>
+</aside>
+</section><section id="sqeazy-pipelines" class="slide level2">
+<h2>Sqeazy Pipelines</h2>
 </section><section id="async-alloc" class="slide level2">
 <h2>Async Alloc</h2>
+</section><section id="algorithms" class="slide level2">
+<h2>Algorithms</h2>
 </section></section>
 <section><section id="portable-performance" class="titleslide slide level1"><h1>Portable Performance</h1></section><section id="perspective" class="slide level2">
 <h2>Perspective</h2>
