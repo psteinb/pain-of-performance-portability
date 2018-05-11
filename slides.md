@@ -113,7 +113,7 @@ report bugs and questions there!
 
 .container-fluid[
 
-.row align-items-top[
+.row align-items-center[
 
 .col[
 
@@ -127,36 +127,405 @@ HPC
 
 Performance  
 
-![by [Sergey Ignatchenko](http://ithare.com/c-performance-common-wisdoms-and-common-wisdoms/)](img/premature_optimisation.png){ class="figure-img img-fluid" }  
-
-
-.]
+![](img/premature-optimisation.png){ class="figure-img img-fluid" }  
+by [Sergey Ignatchenko](http://ithare.com/c-performance-common-wisdoms-and-common-wisdoms/) 
 
 .]
 
 .]
 
+.]
 
 
 # 3D Microscopy
 
 ## Selective Plane Illumination
 
+![CC SA 3.0 by [JKrieger](https://commons.wikimedia.org/wiki/File:Spim_prinziple_en.svg)](img/Spim_prinziple_en.svg){ class="img-fluid" style="width: 70%;" } 
+
 ## Living Embryo Development
 
-## Living Organism Perturbed
+<video width="1400" poster="video/Drosophila_Embryogenesis_beads_removed.png" controls loop>
+<source src="video/Drosophila_Embryogenesis_beads_removed.webm" type='video/webm; codecs="vp8.0, vorbis"'> 
+<source src="video/Drosophila_Embryogenesis_beads_removed.mp4" type='video/mp4'>
+<p>Movie does not work! Sorry!</p>
+</video>
+
+from [openSPIM](http://openspim.org/Gallery)
+
+
+## Living Organism 
+
+<video width="1400" poster="video/developing-drosophila-neuronal-cells.png" controls loop>
+<source src="video/developing-drosophila-neuronal-cells.webm" type='video/webm; codecs="vp8.0, vorbis"'> 
+<!-- <source src="video/Drosophila_Embryogenesis_beads_removed.mp4" type='video/mp4'> -->
+<p>Movie does not work! Sorry!</p>
+</video>
+
+from [A. Bassi et al, Optical tomography complements light sheet microscopy for in toto imaging of zebrafish development](http://dev.biologists.org/content/142/5/1016)
 
 ## Innovation = Challenges
 
-## Big Data
+.container-fluid[
+
+.row align-items-top[
+
+.col[
+
+Commercial : [Zeiss Lightsheet Z1](https://www.zeiss.com/microscopy/us/products/imaging-systems/lightsheet-z-1.html)
+
+.]
+
+.col[
+
+Custom : [Xscope](https://www.mpi-cbg.de/research-groups/current-groups/gene-myers/projects/microscope-development/) by Nicola Maghelli et al (MPI CBG)
+
+.]
+
+.]
+
+.]
+
+.container-fluid[
+
+.row align-items-center[
+
+.col[
+
+![](img/Zeiss_Lightsheet_Z1_600p-cropped.jpg){ class="img-fluid" style="width: 90%;" }  
+
+.]
+
+.col[
+
+![](img/xscope_schematic.png){ class="img-fluid" style="width: 90%;" }  
+
+.]
+
+.]
+
+.]
+
+.container-fluid[
+
+.row align-items-top[
+
+.col[
+
+[120-240 MB/s for 24/7]{.class class="fragment highlight-green" style="font-size: 1.5em"}
+
+.]
+
+.col[
+
+[500-1024 MB/s for 24/7]{.class class="fragment highlight-red" style="font-size: 1.5em"}
+
+.]
+
+.]
+
+.]
+
+:notes[
+
+- custom: 48-86 TB/day
+- custom: 1.2-2.5 PB/month
+
+:]
+
+
+## Big Data! { data-background-image="img/1280px-Panic_button.jpg" }
+
+by [John](https://commons.wikimedia.org/wiki/File:Panic_button.jpg), CC BY-SA 2.0
+
 
 # Compression
 
-## LZW explained
+## Lempel–Ziv–Welch
+
+- at the heart of many compression algorithms today
+- DEFLATE = LZW + huffman encoding
+- ZIP, PNG, TIFF ...
+
+## Example
+
+```{style="font-size: 1.25em"}
+TOBEORNOTTOBEORTOBEORNOT#
+```
+
+. . . 
+
+&nbsp;
+
+.container-fluid[
+
+.row align-items-top[
+
+.col[
+
+- alphabet of 26+1 characters  
+(capital letters + stop code #) 
+- alphabet can be represented by $2^5$ values
+
+
+.]
+
+.col[
+
+
+```
+'#' : 0x0 {0}
+'A' : 0x1 {1}
+'B' : 0x2 {2}
+...
+'Z' : 0x1a {26}
+```
+
+.]
+
+.]
+
+.]
+
+
+## LZW 1
+
+```{style="font-size: 1.25em"}
+TOBEORNOTTOBEORTOBEORNOT#
+^
+```
+
+&nbsp;
+
+.container-fluid[
+
+.row align-items-center[
+
+.col[
+
+- TO unknown, add to dict
+- T known, emit 20
+
+.]
+
+.col[
+
+written:
+
+```
+{20}
+```
+
+dictionary:
+
+```
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
+...
+'T'  : 0x14 {20}
+...
+'Z'  : 0x1a {26}
+'TO' : 0x1b {27}
+```
+
+.]
+
+.]
+
+.]
+
+## LZW 2
+
+```{style="font-size: 1.25em"}
+TOBEORNOTTOBEORTOBEORNOT#
+ ^
+```
+
+&nbsp;
+
+.container-fluid[
+
+.row align-items-center[
+
+.col[
+
+- OB unknown, add to dict
+- O known, emit 15
+
+.]
+
+.col[
+
+written:
+
+```
+{20}{15}
+```
+
+dictionary:
+
+```
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
+...
+'T'  : 0x14 {20}
+...
+'TO' : 0x1b {27}
+'OB' : 0x1c {28}
+```
+
+.]
+
+.]
+
+.]
+
+## LZW 3
+
+```{style="font-size: 1.25em"}
+TOBEORNOTTOBEORTOBEORNOT#
+  ^
+```
+
+&nbsp;
+
+.container-fluid[
+
+.row align-items-center[
+
+.col[
+
+- BE unknown, add to dict
+- B known, emit 2
+
+.]
+
+.col[
+
+written:
+
+```
+{20}{15}{2}
+```
+
+dictionary:
+
+```
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
+...
+'B'  : 0x2  {2}
+...
+'OB' : 0x1c {28}
+'BE' : 0x1d {29}
+```
+
+.]
+
+.]
+
+.]
+
+## LZW 4
+
+```{style="font-size: 1.25em"}
+TOBEORNOTTOBEORTOBEORNOT#
+   ^
+```
+
+&nbsp;
+
+.container-fluid[
+
+.row align-items-center[
+
+.col[
+
+- EO unknown, add to dict
+- E known, emit 5
+
+.]
+
+.col[
+
+written:
+
+```
+{20}{15}{2}{5}
+```
+
+dictionary:
+
+```
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
+...
+'E'  : 0x5  {5}
+...
+'BE' : 0x1d {29}
+'EO' : 0x1e {30}
+```
+
+.]
+
+.]
+
+.]
+
+## LZW 10
+
+```{style="font-size: 1.25em"}
+TOBEORNOTTOBEORTOBEORNOT#
+         ^
+```
+
+&nbsp;
+
+.container-fluid[
+
+.row align-items-center[
+
+.col[
+
+- TOB unknown, add to dict
+- TO known, emit 27
+- [1 symbol, 2 characters]{.class class="fragment highlight-red"}
+
+.]
+
+.col[
+
+written:
+
+```
+{20}{15}{2}{5}{15}{18}{14}{15}{20}{27}
+```
+
+dictionary:
+
+```
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
+...
+'TE' : 0x1b {27}
+...
+'TT' : 0x23 {35}
+'TOB': 0x24 {36}
+```
+
+.]
+
+.]
+
+.]
+
 
 ## LZ4 and friends
 
+
 ## But ... on 16bit data?
+
+
 
 # Sqeazy
 

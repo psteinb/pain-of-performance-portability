@@ -119,7 +119,7 @@
 </section><section id="my-role" class="slide level2">
 <h2>My Role</h2>
 <div class="container-fluid">
-<div class="row align-items-top">
+<div class="row align-items-center">
 <div class="col">
 <p>HPC</p>
 <figure>
@@ -128,26 +128,249 @@
 </div>
 <div class="col">
 <p>Performance</p>
-<figure>
-<img src="img/premature_optimisation.png" alt="by Sergey Ignatchenko" class="figure-img img-fluid" /><figcaption>by <a href="http://ithare.com/c-performance-common-wisdoms-and-common-wisdoms/">Sergey Ignatchenko</a></figcaption>
-</figure>
+<p><img src="img/premature-optimisation.png" class="figure-img img-fluid" /><br />
+by <a href="http://ithare.com/c-performance-common-wisdoms-and-common-wisdoms/">Sergey Ignatchenko</a></p>
 </div>
 </div>
 </div>
 </section></section>
 <section><section id="d-microscopy" class="titleslide slide level1"><h1>3D Microscopy</h1></section><section id="selective-plane-illumination" class="slide level2">
 <h2>Selective Plane Illumination</h2>
+<figure>
+<img src="img/Spim_prinziple_en.svg" alt="CC SA 3.0 by JKrieger" class="img-fluid" style="width: 70%;" /><figcaption>CC SA 3.0 by <a href="https://commons.wikimedia.org/wiki/File:Spim_prinziple_en.svg">JKrieger</a></figcaption>
+</figure>
 </section><section id="living-embryo-development" class="slide level2">
 <h2>Living Embryo Development</h2>
-</section><section id="living-organism-perturbed" class="slide level2">
-<h2>Living Organism Perturbed</h2>
+<video width="1400" poster="video/Drosophila_Embryogenesis_beads_removed.png" controls loop>
+<source src="video/Drosophila_Embryogenesis_beads_removed.webm" type='video/webm; codecs="vp8.0, vorbis"'>
+<source src="video/Drosophila_Embryogenesis_beads_removed.mp4" type='video/mp4'>
+<p>
+Movie does not work! Sorry!
+</p>
+</video>
+<p>from <a href="http://openspim.org/Gallery">openSPIM</a></p>
+</section><section id="living-organism" class="slide level2">
+<h2>Living Organism</h2>
+<video width="1400" poster="video/developing-drosophila-neuronal-cells.png" controls loop>
+<source src="video/developing-drosophila-neuronal-cells.webm" type='video/webm; codecs="vp8.0, vorbis"'>
+<!-- <source src="video/Drosophila_Embryogenesis_beads_removed.mp4" type='video/mp4'> -->
+<p>
+Movie does not work! Sorry!
+</p>
+</video>
+<p>from <a href="http://dev.biologists.org/content/142/5/1016">A. Bassi et al, Optical tomography complements light sheet microscopy for in toto imaging of zebrafish development</a></p>
 </section><section id="innovation-challenges" class="slide level2">
 <h2>Innovation = Challenges</h2>
-</section><section id="big-data" class="slide level2">
-<h2>Big Data</h2>
+<div class="container-fluid">
+<div class="row align-items-top">
+<div class="col">
+<p>Commercial : <a href="https://www.zeiss.com/microscopy/us/products/imaging-systems/lightsheet-z-1.html">Zeiss Lightsheet Z1</a></p>
+</div>
+<div class="col">
+<p>Custom : <a href="https://www.mpi-cbg.de/research-groups/current-groups/gene-myers/projects/microscope-development/">Xscope</a> by Nicola Maghelli et al (MPI CBG)</p>
+</div>
+</div>
+</div>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<figure>
+<img src="img/Zeiss_Lightsheet_Z1_600p-cropped.jpg" class="img-fluid" style="width: 90%;" />
+</figure>
+</div>
+<div class="col">
+<figure>
+<img src="img/xscope_schematic.png" class="img-fluid" style="width: 90%;" />
+</figure>
+</div>
+</div>
+</div>
+<div class="container-fluid">
+<div class="row align-items-top">
+<div class="col">
+<p><span class="class fragment highlight-green" style="font-size: 1.5em">120-240 MB/s for 24/7</span></p>
+</div>
+<div class="col">
+<p><span class="class fragment highlight-red" style="font-size: 1.5em">500-1024 MB/s for 24/7</span></p>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>custom: 48-86 TB/day</li>
+<li>custom: 1.2-2.5 PB/month</li>
+</ul>
+</aside>
+</section><section id="big-data" class="slide level2" data-background-image="img/1280px-Panic_button.jpg">
+<h2>Big Data!</h2>
+<p>by <a href="https://commons.wikimedia.org/wiki/File:Panic_button.jpg">John</a>, CC BY-SA 2.0</p>
 </section></section>
-<section><section id="compression" class="titleslide slide level1"><h1>Compression</h1></section><section id="lzw-explained" class="slide level2">
-<h2>LZW explained</h2>
+<section><section id="compression" class="titleslide slide level1"><h1>Compression</h1></section><section id="lempelzivwelch" class="slide level2">
+<h2>Lempel–Ziv–Welch</h2>
+<ul>
+<li>at the heart of many compression algorithms today</li>
+<li>DEFLATE = LZW + huffman encoding</li>
+<li>ZIP, PNG, TIFF ...</li>
+</ul>
+</section><section id="example" class="slide level2">
+<h2>Example</h2>
+<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#</code></pre>
+<div class="fragment">
+<p> </p>
+<div class="container-fluid">
+<div class="row align-items-top">
+<div class="col">
+<ul>
+<li>alphabet of 26+1 characters<br />
+(capital letters + stop code #)</li>
+<li>alphabet can be represented by <span class="math inline">2<sup>5</sup></span> values</li>
+</ul>
+</div>
+<div class="col">
+<pre><code>&#39;#&#39; : 0x0 {0}
+&#39;A&#39; : 0x1 {1}
+&#39;B&#39; : 0x2 {2}
+...
+&#39;Z&#39; : 0x1a {26}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section><section id="lzw-1" class="slide level2">
+<h2>LZW 1</h2>
+<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
+^</code></pre>
+<p> </p>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<ul>
+<li>TO unknown, add to dict</li>
+<li>T known, emit 20</li>
+</ul>
+</div>
+<div class="col">
+<p>written:</p>
+<pre><code>{20}</code></pre>
+<p>dictionary:</p>
+<pre><code>&#39;#&#39;  : 0x0  {0}
+&#39;A&#39;  : 0x1  {1}
+...
+&#39;T&#39;  : 0x14 {20}
+...
+&#39;Z&#39;  : 0x1a {26}
+&#39;TO&#39; : 0x1b {27}</code></pre>
+</div>
+</div>
+</div>
+</section><section id="lzw-2" class="slide level2">
+<h2>LZW 2</h2>
+<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
+ ^</code></pre>
+<p> </p>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<ul>
+<li>OB unknown, add to dict</li>
+<li>O known, emit 15</li>
+</ul>
+</div>
+<div class="col">
+<p>written:</p>
+<pre><code>{20}{15}</code></pre>
+<p>dictionary:</p>
+<pre><code>&#39;#&#39;  : 0x0  {0}
+&#39;A&#39;  : 0x1  {1}
+...
+&#39;T&#39;  : 0x14 {20}
+...
+&#39;TO&#39; : 0x1b {27}
+&#39;OB&#39; : 0x1c {28}</code></pre>
+</div>
+</div>
+</div>
+</section><section id="lzw-3" class="slide level2">
+<h2>LZW 3</h2>
+<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
+  ^</code></pre>
+<p> </p>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<ul>
+<li>BE unknown, add to dict</li>
+<li>B known, emit 2</li>
+</ul>
+</div>
+<div class="col">
+<p>written:</p>
+<pre><code>{20}{15}{2}</code></pre>
+<p>dictionary:</p>
+<pre><code>&#39;#&#39;  : 0x0  {0}
+&#39;A&#39;  : 0x1  {1}
+...
+&#39;B&#39;  : 0x2  {2}
+...
+&#39;OB&#39; : 0x1c {28}
+&#39;BE&#39; : 0x1d {29}</code></pre>
+</div>
+</div>
+</div>
+</section><section id="lzw-4" class="slide level2">
+<h2>LZW 4</h2>
+<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
+   ^</code></pre>
+<p> </p>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<ul>
+<li>EO unknown, add to dict</li>
+<li>E known, emit 5</li>
+</ul>
+</div>
+<div class="col">
+<p>written:</p>
+<pre><code>{20}{15}{2}{5}</code></pre>
+<p>dictionary:</p>
+<pre><code>&#39;#&#39;  : 0x0  {0}
+&#39;A&#39;  : 0x1  {1}
+...
+&#39;E&#39;  : 0x5  {5}
+...
+&#39;BE&#39; : 0x1d {29}
+&#39;EO&#39; : 0x1e {30}</code></pre>
+</div>
+</div>
+</div>
+</section><section id="lzw-10" class="slide level2">
+<h2>LZW 10</h2>
+<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
+         ^</code></pre>
+<p> </p>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<ul>
+<li>TOB unknown, add to dict</li>
+<li>TO known, emit 27</li>
+</ul>
+</div>
+<div class="col">
+<p>written:</p>
+<pre><code>{20}{15}{2}{5}{15}{18}{14}{15}{20}{27}</code></pre>
+<p>dictionary:</p>
+<pre><code>&#39;#&#39;  : 0x0  {0}
+&#39;A&#39;  : 0x1  {1}
+...
+&#39;TE&#39; : 0x1b {27}
+...
+&#39;TT&#39; : 0x23 {35}
+&#39;TOB&#39;: 0x24 {36}</code></pre>
+</div>
+</div>
+</div>
 </section><section id="lz4-and-friends" class="slide level2">
 <h2>LZ4 and friends</h2>
 </section><section id="but-...-on-16bit-data" class="slide level2">
