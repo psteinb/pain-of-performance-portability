@@ -954,6 +954,7 @@ From [blosc tutorial](http://python-blosc.blosc.org/tutorial.html#fine-tuning-co
 
 - detect (some) compile-time features
 - enables sensible hardware specific defaults
+- no dependencies
 
 .]
 
@@ -991,12 +992,12 @@ auto L2_in_kb = compass::runtime::size::cache::level(2);
 foo.set_blocksize(L2_in_kb*.75)
 ```
 
-## compass benchmark
+## compass benchmark{#compassbench style="font-size: 1.5em"}
 
 ```
 Run on (4 X 3600 MHz CPU s)
 2018-05-14 17:37:29
-***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+***WARNING*** CPU scaling is enabled, the benchmark real time ...
 --------------------------------------------------------------
 Benchmark                       Time           CPU Iterations
 --------------------------------------------------------------
@@ -1004,7 +1005,9 @@ BM_compass_sse4_1              31 ns         31 ns   22705074
 BM_cpu_features_sse4_1        242 ns        241 ns    2870098
 ```
 
-Competition ([google/cpu_features](https://github.com/google/cpu_features)) is hard but not unbeatable
+&nbsp;
+
+Competition ([google/cpu_features](https://github.com/google/cpu_features)) is hard but not unbeatable! 
 
 <!-- ## Background estimation -->
 
@@ -1029,7 +1032,7 @@ Competition ([google/cpu_features](https://github.com/google/cpu_features)) is h
 
 ## parallelisation
 
-## state of the cross-platform union
+## state of cross-platform implicit concurrency in C++
 
 ## C++17
 
