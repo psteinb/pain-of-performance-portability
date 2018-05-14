@@ -993,6 +993,19 @@ foo.set_blocksize(L2_in_kb*.75)
 
 ## compass benchmark
 
+```
+Run on (4 X 3600 MHz CPU s)
+2018-05-14 17:37:29
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+--------------------------------------------------------------
+Benchmark                       Time           CPU Iterations
+--------------------------------------------------------------
+BM_compass_sse4_1              31 ns         31 ns   22705074
+BM_cpu_features_sse4_1        242 ns        241 ns    2870098
+```
+
+Competition ([google/cpu_features](https://github.com/google/cpu_features)) is hard but not unbeatable
+
 <!-- ## Background estimation -->
 
 <!-- 1. estimate median and variance of noise -->

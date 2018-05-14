@@ -695,10 +695,10 @@ out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_
 </figure>
 </section><section id="compass-features" class="slide level2">
 <h2>compass features</h2>
-<pre><code>static const bool has_avx2 = compass::compiletime::has(compass::feature::avx2());
-if(has_avx2)
+<pre><code>static const bool has_sse2 = compass::compiletime::has&lt;compass::feature::sse2&gt;::value);
+if(has_sse2)
 {
-  do_magic_with_avx2();
+  do_magic_with_sse2();
 }</code></pre>
 <pre><code>auto has_avx2 = compass::runtime::has(compass::feature::avx2());
 if(has_avx2)
@@ -711,6 +711,15 @@ foo.set_blocksize(L2_in_kb*.75)</code></pre>
 </div>
 </section><section id="compass-benchmark" class="slide level2">
 <h2>compass benchmark</h2>
+<pre><code>Run on (4 X 3600 MHz CPU s)
+2018-05-14 17:37:29
+***WARNING*** CPU scaling is enabled, the benchmark real time measurements may be noisy and will incur extra overhead.
+--------------------------------------------------------------
+Benchmark                       Time           CPU Iterations
+--------------------------------------------------------------
+BM_compass_sse4_1              31 ns         31 ns   22705074
+BM_cpu_features_sse4_1        242 ns        241 ns    2870098</code></pre>
+<p>Competition (<a href="https://github.com/google/cpu_features">google/cpu_features</a>) is hard but not unbeatable</p>
 <!-- ## Background estimation -->
 <!-- 1. estimate median and variance of noise -->
 <!-- 2. reduce all pixels by (mean+1*variance) -->
