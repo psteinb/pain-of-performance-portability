@@ -75,6 +75,7 @@
 </section></section>
 <section><section id="about-me" class="titleslide slide level1"><h1>About me</h1></section><section id="scionics-computer-innovation-gmbh" class="slide level2">
 <h2><a href="https://www.scionics.de">Scionics Computer Innovation GmbH</a></h2>
+<p> </p>
 <div class="container-fluid">
 <div class="row align-items-center">
 <div class="col">
@@ -92,6 +93,9 @@
 </div>
 </div>
 </div>
+<p> </p>
+<p>Need Help with Data Analysis, Machine Learning, Parallelisation or Performance Engineering ?<br />
+<a href="mailto:steinbach@scionics.de">Get in Touch!</a></p>
 </section><section id="max-planck-institute-for-molecular-cell-biology-and-genetics" class="slide level2">
 <h2>Max-Planck Institute for Molecular Cell Biology and Genetics</h2>
 <div class="container-fluid">
@@ -452,15 +456,18 @@ zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total</code></pre>
 <li>lossless: 3x or more</li>
 <li>lossy: 10x or more</li>
 </ul></li>
+<li>flexible pipeline definition</li>
+<li>support video codecs (<a href="https://www.videolan.org/developers/x264.html">x264</a>, <a href="http://x265.readthedocs.io/en/default/">x265</a>)</li>
+<li>support community file formats like <a href="https://www.hdfgroup.com">HDF5</a></li>
 </ul>
 </div>
 <div class="col">
 <ul>
 <li>support 16 and 8-bit data types</li>
-<li>go multi-core</li>
-<li>Linux, macOS and /Win7/</li>
+<li>multi-core</li>
+<li>x86</li>
+<li>Linux, macOS and <em>Win7</em></li>
 <li>redistributable binary</li>
-<li>flexible pipeline definition</li>
 <li>interface to Java</li>
 </ul>
 </div>
@@ -489,7 +496,6 @@ zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total</code></pre>
 00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110
                 ^                 ^                 ^                 ^                 ^                 ^
 -&gt; 110010</code></pre>
-<p>original: 140MB, lz4-only: 114MB, bitshuffle+lz4: 60MB</p>
 </section><section id="pipelining" class="slide level2">
 <h2>Pipelining</h2>
 <p>On the command-line:</p>
@@ -505,6 +511,7 @@ SqeazyLibrary.SQY_PipelineEncode_UI16(bPipelineName,lSourceBytes,
 char* encoded_end = pipe.encode(input.data(),
                                 encoded.data(),
                                 shape);</code></pre>
+<p>original: 140MB, lz4-only: 114MB, bitshuffle+lz4: 60MB</p>
 <aside class="notes">
 <ul>
 <li>pipelines important to reshape/filter data</li>
@@ -580,25 +587,145 @@ out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_
    }
 
 }</code></pre>
-</section><section id="algorithms" class="slide level2">
-<h2>Algorithms</h2>
+<aside class="notes">
+<ul>
+<li>overhead of allocations mitigated</li>
+<li>pipeline that does nothing ~ memcpy speed</li>
+<li>HERE: coding with performance</li>
+<li>NEXT: performance</li>
+</ul>
+</aside>
 </section></section>
-<section><section id="portable-performance" class="titleslide slide level1"><h1>Portable Performance</h1></section><section id="perspective" class="slide level2">
-<h2>Perspective</h2>
+<section><section id="portable-performance" class="titleslide slide level1"><h1>Portable Performance</h1></section><section id="perspectives-and-illusions" class="slide level2">
+<h2>Perspectives and illusions</h2>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<figure>
+<img src="img/737px-My_Wife_and_My_Mother-in-Law.jpg" alt="My Wife and My Mother-in-Law" class="img-fluid" style="width: 60%;" /><figcaption><a href="https://commons.wikimedia.org/wiki/File:My_Wife_and_My_Mother-in-Law.jpg">My Wife and My Mother-in-Law</a></figcaption>
+</figure>
+</div>
+<div class="col">
+<p>Portable Performance as <strong>same performance on every system</strong> is <span class="class fragment highlight-red">impossible</span></p>
+<ul>
+<li>cache level volume(s) depends on price</li>
+<li>memory system changes (bytes per flops)</li>
+<li>clock counts, turbo boosts</li>
+<li>instruction sets available</li>
+<li>installed runtime library versions</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>ignore real-time hardware for now</li>
+<li>focus on x86</li>
+<li>very hardware centered view</li>
+<li>domain metrics <em>often</em> less sensitive</li>
+<li>NEXT: way out</li>
+</ul>
+</aside>
+</section><section id="manage-expectations" class="slide level2">
+<h2>Manage Expectations</h2>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<figure>
+<img src="img/expectations.jpg" alt="CC0" class="img-fluid" style="width: 60%;" /><figcaption>CC0</figcaption>
+</figure>
+</div>
+<div class="col">
+<p>Honest Performance</p>
+<ul>
+<li>communicate hardware requirements</li>
+<li>speak in units of the domain (e.g. images per second, pixels per second)</li>
+<li>give ranges (e.g. algorithm can compress from 0.95 to 3x on our test data)</li>
+<li>provide reproducible benchmarks (at best which can be run by user)</li>
+</ul>
+</div>
+</div>
+</div>
 </section><section id="adaptive-algorithms" class="slide level2">
 <h2>Adaptive Algorithms?</h2>
-</section><section id="background-estimation" class="slide level2">
-<h2>Background estimation</h2>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<figure>
+<img src="img/proper_tools.jpg" alt="CC0" class="img-fluid" style="width: 60%;" /><figcaption><a href="https://commons.wikimedia.org/wiki/File:%22USE_PROPER_TOOLS_FOR_THE_JOB_-_TAKE_CARE_OF_THEM%22_-_NARA_-_515954.jpg">CC0</a></figcaption>
+</figure>
+</div>
+<div class="col">
+<p>From <a href="http://python-blosc.blosc.org/tutorial.html#fine-tuning-compression-parameters">blosc tutorial</a>:</p>
+<blockquote>
+<p>Often the L2 cache size (e.g. 256kB for an Intel Haswell) is a good starting point for optimization.</p>
+</blockquote>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>user based blocksize setting not necessary</li>
+<li>implementations should be clever enough</li>
+<li>NEXT: compass</li>
+</ul>
+</aside>
 </section><section id="compass" class="slide level2">
-<h2>compass</h2>
-</section><section id="compass-details" class="slide level2">
-<h2>compass details</h2>
+<h2><a href="https://github.com/psteinb/compass">compass</a></h2>
+<div class="container-fluid">
+<div class="row align-items-top">
+<div class="col">
+<ul>
+<li>single-header library (thanks to <a href="https://github.com/ned14/pcpp">pcpp</a>)</li>
+<li>easy drop-in to your project</li>
+<li>detect hardware features at runtime</li>
+</ul>
+</div>
+<div class="col">
+<ul>
+<li>detect (some) compile-time features</li>
+<li>enables sensible hardware specific defaults</li>
+</ul>
+</div>
+</div>
+</div>
+<p> </p>
+<figure>
+<img src="img/compass-repo.png" alt="github.com/psteinb/compass" class="img-fluid" style="width: 80%;" /><figcaption><a href="https://github.com/psteinb/compass">github.com/psteinb/compass</a></figcaption>
+</figure>
+</section><section id="compass-features" class="slide level2">
+<h2>compass features</h2>
+<pre><code>static const bool has_avx2 = compass::compiletime::has(compass::feature::avx2());
+if(has_avx2)
+{
+  do_magic_with_avx2();
+}</code></pre>
+<pre><code>auto has_avx2 = compass::runtime::has(compass::feature::avx2());
+if(has_avx2)
+{
+  do_magic_with_avx2();
+}</code></pre>
+<div class="fragment">
+<pre><code>auto L2_in_kb = compass::runtime::size::cache::level(2);
+foo.set_blocksize(L2_in_kb*.75)</code></pre>
+</div>
 </section><section id="compass-benchmark" class="slide level2">
 <h2>compass benchmark</h2>
+<!-- ## Background estimation -->
+<!-- 1. estimate median and variance of noise -->
+<!-- 2. reduce all pixels by (mean+1*variance) -->
+<!-- 3. clamp all negative intensities to 0 -->
+<!-- ** how many samples to collect for median/variance ? ** -->
+<!-- :notes[ -->
+<!-- - algorithm provides minimal loss -->
+<!-- - can boost compression ratio to 15x -->
+<!-- - options: fixed number of pixels, adapt to host at runtime -->
+<!-- - NEXT: compass -->
+<!-- :] -->
 </section><section id="tools" class="slide level2">
 <h2>Tools</h2>
-</section><section id="kerncraft" class="slide level2">
-<h2>kerncraft</h2>
+</section><section id="flamegraphs-et-al" class="slide level2">
+<h2>flamegraphs et al</h2>
 </section><section id="parallelisation" class="slide level2">
 <h2>parallelisation</h2>
 </section><section id="state-of-the-cross-platform-union" class="slide level2">

@@ -49,6 +49,8 @@ report bugs and questions there!
 
 ## [Scionics Computer Innovation GmbH](https://www.scionics.de)
 
+&nbsp;
+
 .container-fluid[
 
 .row align-items-center[
@@ -72,6 +74,11 @@ report bugs and questions there!
 
 .]
 
+
+&nbsp;
+
+Need Help with Data Analysis, Machine Learning, Parallelisation or Performance Engineering ?   
+[Get in Touch!](mailto:steinbach@scionics.de)
 
 
 ## Max-Planck Institute for Molecular Cell Biology and Genetics
@@ -628,16 +635,19 @@ zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total
 - target:
     + lossless: 3x or more
     + lossy: 10x or more
+- flexible pipeline definition
+- support video codecs ([x264](https://www.videolan.org/developers/x264.html), [x265](http://x265.readthedocs.io/en/default/))
+- support community file formats like [HDF5](https://www.hdfgroup.com)
     
   .]
 
 .col[
 
 - support 16 and 8-bit data types
-- go multi-core
-- Linux, macOS and /Win7/
+- multi-core
+- x86
+- Linux, macOS and _Win7_
 - redistributable binary
-- flexible pipeline definition
 - interface to Java
 
 .]
@@ -687,7 +697,7 @@ Bitplane 15
 -> 110010
 ```
 
-original: 140MB, lz4-only: 114MB, bitshuffle+lz4: 60MB
+
     
 
 ## Pipelining
@@ -716,6 +726,8 @@ char* encoded_end = pipe.encode(input.data(),
                                 encoded.data(),
                                 shape);
 ```
+
+original: 140MB, lz4-only: 114MB, bitshuffle+lz4: 60MB
 
 :notes[
 
@@ -780,6 +792,7 @@ out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_
 
 :]
 
+
 ## Latency Hiding
 
 ```
@@ -819,21 +832,187 @@ out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_
 
 # Portable Performance
 
-## Perspective
+## Perspectives and illusions
+
+.container-fluid[
+
+.row align-items-center[
+
+  .col[
+
+![[My Wife and My Mother-in-Law](https://commons.wikimedia.org/wiki/File:My_Wife_and_My_Mother-in-Law.jpg)](img/737px-My_Wife_and_My_Mother-in-Law.jpg){ class="img-fluid" style="width: 60%;" }
+   
+  .]
+
+.col[
+
+Portable Performance as **same performance on every system** is [impossible]{.class class="fragment highlight-red"}  
+
+- cache level volume(s) depends on price
+- memory system changes (bytes per flops)
+- clock counts, turbo boosts
+- instruction sets available
+- installed runtime library versions
+
+.]
+
+.]
+
+.]
+
+:notes[
+
+- ignore real-time hardware for now
+- focus on x86
+- very hardware centered view
+- domain metrics *often* less sensitive
+- NEXT: way out
+
+:]
+
+
+## Manage Expectations
+
+
+.container-fluid[
+
+.row align-items-center[
+
+  .col[
+
+![CC0](img/expectations.jpg){ class="img-fluid" style="width: 60%;" }
+   
+  .]
+
+.col[
+
+Honest Performance
+
+- communicate hardware requirements
+- speak in units of the domain (e.g. images per second, pixels per second)
+- give ranges (e.g. algorithm can compress from 0.95 to 3x on our test data) 
+- provide reproducible benchmarks (at best which can be run by user)
+
+.]
+
+.]
+
+.]
+
 
 ## Adaptive Algorithms?
 
-## Background estimation
+.container-fluid[
 
-## compass
+.row align-items-center[
 
-## compass details
+  .col[
+
+![[CC0](https://commons.wikimedia.org/wiki/File:%22USE_PROPER_TOOLS_FOR_THE_JOB_-_TAKE_CARE_OF_THEM%22_-_NARA_-_515954.jpg)](img/proper_tools.jpg){ class="img-fluid" style="width: 60%;" }
+   
+  .]
+
+.col[
+
+
+From [blosc tutorial](http://python-blosc.blosc.org/tutorial.html#fine-tuning-compression-parameters):
+
+> Often the L2 cache size (e.g. 256kB for an Intel Haswell) is a good starting point for optimization.
+
+
+
+.]
+
+.]
+
+.]
+
+:notes[
+
+- user based blocksize setting not necessary
+- implementations should be clever enough
+- NEXT: compass
+
+:]
+
+
+## [compass](https://github.com/psteinb/compass)
+
+.container-fluid[
+
+.row align-items-top[
+
+  .col[
+
+- single-header library (thanks to [pcpp](https://github.com/ned14/pcpp))
+- easy drop-in to your project
+- detect hardware features at runtime
+   
+  .]
+
+.col[
+
+- detect (some) compile-time features
+- enables sensible hardware specific defaults
+
+.]
+
+.]
+
+.]
+
+&nbsp;
+
+![[github.com/psteinb/compass](https://github.com/psteinb/compass)](img/compass-repo.png){ class="img-fluid" style="width: 80%;" }
+
+
+## compass features
+
+```
+static const bool has_sse2 = compass::compiletime::has<compass::feature::sse2>::value);
+if(has_sse2)
+{
+  do_magic_with_sse2();
+}
+```
+
+```
+auto has_avx2 = compass::runtime::has(compass::feature::avx2());
+if(has_avx2)
+{
+  do_magic_with_avx2();
+}
+```
+
+. . .
+
+```
+auto L2_in_kb = compass::runtime::size::cache::level(2);
+foo.set_blocksize(L2_in_kb*.75)
+```
 
 ## compass benchmark
 
+<!-- ## Background estimation -->
+
+<!-- 1. estimate median and variance of noise -->
+<!-- 2. reduce all pixels by (mean+1*variance) -->
+<!-- 3. clamp all negative intensities to 0 -->
+
+<!-- ** how many samples to collect for median/variance ? ** -->
+
+<!-- :notes[ -->
+
+<!-- - algorithm provides minimal loss -->
+<!-- - can boost compression ratio to 15x -->
+<!-- - options: fixed number of pixels, adapt to host at runtime -->
+<!-- - NEXT: compass -->
+
+<!-- :] -->
+
 ## Tools
 
-## kerncraft
+## flamegraphs et al
 
 ## parallelisation
 
