@@ -732,7 +732,7 @@ original: 140MB, lz4-only: 114MB, bitshuffle+lz4: 60MB
 :notes[
 
 - pipelines important to reshape/filter data
-- 
+ 
 
 :]
 
@@ -756,7 +756,7 @@ template <
 
 :notes[
 
-- first attempt: static pipelines with Boost.MTL
+- 1st try: static pipelines with Boost.MTL
 - pipeline object checks if stages fit
 - KISS
 - NEXT: Temporaries
@@ -886,12 +886,15 @@ Portable Performance as **same performance on every system** is [impossible]{.cl
 
 .col[
 
-Honest Performance
+**Honest Performance**
 
 - communicate hardware requirements
-- speak in units of the domain (e.g. images per second, pixels per second)
-- give ranges (e.g. algorithm can compress from 0.95 to 3x on our test data) 
-- provide reproducible benchmarks (at best which can be run by user)
+- speak in units of the domain  
+(e.g. images per second, pixels per second)
+- give ranges  
+(e.g. algorithm can compress from 0.95 to 3x on our test data) 
+- provide reproducible benchmarks  
+(at best which can be run by user)
 
 .]
 
@@ -969,7 +972,7 @@ From [blosc tutorial](http://python-blosc.blosc.org/tutorial.html#fine-tuning-co
 
 ## compass features
 
-``` {#longcode .line-numbers data-highlight-lines="2"}
+``` {#staticexample .line-numbers data-highlight-lines="2"}
 static const bool has_sse2 = compass::compiletime::has&lt;compass::feature::sse2>::value);
 if(has_sse2)
 {
@@ -977,7 +980,7 @@ if(has_sse2)
 }
 ```
 
-```
+``` {#runtimeexample .line-numbers data-highlight-lines="2"}
 auto has_avx2 = compass::runtime::has(compass::feature::avx2());
 if(has_avx2)
 {
@@ -987,14 +990,16 @@ if(has_avx2)
 
 . . .
 
-```
+``` {#l2example .line-numbers}
 auto L2_in_kb = compass::runtime::size::cache::level(2);
 foo.set_blocksize(L2_in_kb*.75)
 ```
 
+
+
 ## compass benchmark{#compassbench style="font-size: 1.5em"}
 
-```
+```{#compassbench .line-numbers}
 Run on (4 X 3600 MHz CPU s)
 2018-05-14 17:37:29
 ***WARNING*** CPU scaling is enabled, the benchmark real time ...
@@ -1012,11 +1017,11 @@ Competition ([google/cpu_features](https://github.com/google/cpu_features)) is h
 
 ## compass lessons learned {#compassbench style="font-size: 1.5em"}
 
-- gcc/clang yield similar APIs
+- gcc/clang yield similar APIs (good!)
 - MSVC hard to control target hardware
 - MSVC hardly communicates compile targets in preprocessor flags
 - what the intel manual says != reality in many cases (detecting physical cores)
-- would love to see more introspection activity (free memory, current CPU load)
+- would love to see more C++ introspection activity (free memory, current CPU load)
 
 <!-- ## Background estimation -->
 
@@ -1038,9 +1043,126 @@ Competition ([google/cpu_features](https://github.com/google/cpu_features)) is h
 :notes[
 
 - good infrastructure
-- NEXT: good tools
+- NEXT: good tools, parallelisation techniques
 
 :]
+
+
+
+## parallelisation
+
+.container-fluid[
+
+.row align-items-center[
+
+  .col[
+
+![](img/art_of_concurrency.jpg){ class="img-fluid" style="width: 60%;" }  
+
+  .]
+
+  .col[
+  
+  > Always prefer implicit over explicit parallelisation techniques.
+  >
+  > [Clay Breshears, The Art of Concurrency, O'Reilly, 2009]{.class style="font-size: .75em"}
+
+  .]
+
+.]
+
+.]
+
+:notes[
+
+- exclude library based solutions:
+Intel TBB, OpenCL, ...
+
+:]
+
+## state of cross-platform implicit concurrency in C++ {#parallelcompare style="font-size: 1.5em"}
+
+&nbsp;
+
+.container-fluid[
+
+.row align-items-center[
+
+  .col[
+
+**OpenMP**
+
+- [gcc 4+]{.class style="color: green"}
+- [clang 4+]{.class style="color: green"}
+- [MSVC 2]{.class style="color: red"}
+
+  .]
+
+  .col[
+  
+**C++17 parallel TS**
+
+- [gcc ??]{.class style="color: red"}
+- [clang ??]{.class style="color: red"}
+- [MSVC]{.class style="color: green"}
+
+  .]
+
+.]
+
+.]
+
+
+## Code Bloat with C++17 ?
+
+```
+std::vector<T> a(size), b(size);
+
+#pragma omp parallel for num_threads(n) static(chunksize=42)
+for(int i = 0;i < size;++i)
+    a[i] = foo(b[i]);
+```
+
+```
+std::transform( std::par, b.cbegin(), b.cend(),
+                          a.begin(), 
+                          []( auto & el){ return foo(el);} 
+              );
+```
+
+&nbsp; 
+
+Executors in C++20?
+
+:notes[
+
+- convert top openmp code to bottom C++17?!
+
+:]
+
+
+# Summary
+
+## Performance Portability? {#summary style="font-size: 1.5em"}
+
+- compression is a must have for 21st century science and data services
+
+- Modern C++11/14/17 is the goto tool for high performance applications
+
+- Ecosystem needs more flexible tooling to adapt to ever changing hardware
+
+&nbsp;
+
+**C++ needs to come with it's own portable batteries!**
+
+
+# Backup 
+
+## Better Compression with video codecs?
+
+![](img/ffmpeg_cpugpu_video_codecs_sdk.svg){ width=60% }
+
+[P Steinbach, High-bandwidth 3D Image Compression to Boost Predictive Life Sciences, 2017](https://psteinb.github.io/gtc2017/#/)
 
 
 ## [perf](https://perf.wiki.kernel.org/index.php/Main_Page) Reloaded with [FlameGraphs](https://github.com/brendangregg/FlameGraph)
@@ -1077,7 +1199,7 @@ $ ./flamegraph.pl out.folded > perf_samples.svg
 .]
 
 
-## Ethereum Mining [as FlameGraph](img/ethminer-cuda-simulate.svg)
+## Sqeazy Encoding [as FlameGraph](img/sqy-encode.svg)
 
 .container-fluid[
 
@@ -1085,7 +1207,7 @@ $ ./flamegraph.pl out.folded > perf_samples.svg
 
   .col[
   
-  <object type="image/svg+xml" data="img/ethminer-cuda-simulate.svg" width="90%">
+  <object type="image/svg+xml" data="img/sqy-encode.svg" width="90%">
   Your browser does not support SVG
   </object>
 
@@ -1123,18 +1245,28 @@ $ ./flamegraph.pl out.folded > perf_samples.svg
 :]
 
 
-## flamegraphs available near you
-
-show UIforETW
+## flamegraphs on Windows
 
 
-## parallelisation
+.container-fluid[
 
-## state of cross-platform implicit concurrency in C++
+.row align-items-center[
 
-## C++17
+  .col[
 
-## C++20 cancellable tasks
+![from [Bruce Dawsons Blog](https://randomascii.wordpress.com/2016/09/05/etw-flame-graphs-made-easy/)](img/uiforetw.png){ class="img-fluid" style="width: 90%;" }
+  
+  .]
 
-# Summary
+  .col[
 
+  - based on Event Tracing for Windows  
+  - [UIforETW](https://github.com/google/UIforETW) to collect traces
+  - very versatile profiler (all system, process-only)
+  - can show much more information than flamegraphs
+
+  .]
+
+.]
+
+.]

@@ -569,7 +569,6 @@ char* encoded_end = pipe.encode(input.data(),
 <aside class="notes">
 <ul>
 <li>pipelines important to reshape/filter data</li>
-<li></li>
 </ul>
 </aside>
 </section><section id="sqeazy-pipelines" class="slide level2">
@@ -590,7 +589,7 @@ template <
 </code></pre>
 <aside class="notes">
 <ul>
-<li>first attempt: static pipelines with Boost.MTL</li>
+<li>1st try: static pipelines with Boost.MTL</li>
 <li>pipeline object checks if stages fit</li>
 <li>KISS</li>
 <li>NEXT: Temporaries</li>
@@ -696,12 +695,15 @@ out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_
 </figure>
 </div>
 <div class="col">
-<p>Honest Performance</p>
+<p><strong>Honest Performance</strong></p>
 <ul>
 <li>communicate hardware requirements</li>
-<li>speak in units of the domain (e.g. images per second, pixels per second)</li>
-<li>give ranges (e.g. algorithm can compress from 0.95 to 3x on our test data)</li>
-<li>provide reproducible benchmarks (at best which can be run by user)</li>
+<li>speak in units of the domain<br />
+(e.g. images per second, pixels per second)</li>
+<li>give ranges<br />
+(e.g. algorithm can compress from 0.95 to 3x on our test data)</li>
+<li>provide reproducible benchmarks<br />
+(at best which can be run by user)</li>
 </ul>
 </div>
 </div>
@@ -763,7 +765,7 @@ if(has_sse2)
   do_magic_with_sse2();
 }
 </code></pre>
-<pre><code>
+<pre><code class="line-numbers" data-highlight-lines=2>
 auto has_avx2 = compass::runtime::has(compass::feature::avx2());
 if(has_avx2)
 {
@@ -771,14 +773,14 @@ if(has_avx2)
 }
 </code></pre>
 <div class="fragment">
-<pre><code>
+<pre><code class="line-numbers">
 auto L2_in_kb = compass::runtime::size::cache::level(2);
 foo.set_blocksize(L2_in_kb*.75)
 </code></pre>
 </div>
 </section><section id="compassbench" class="slide level2" style="font-size: 1.5em">
 <h2>compass benchmark</h2>
-<pre><code>
+<pre><code class="line-numbers">
 Run on (4 X 3600 MHz CPU s)
 2018-05-14 17:37:29
 ***WARNING*** CPU scaling is enabled, the benchmark real time ...
@@ -793,11 +795,11 @@ BM_cpu_features_sse4_1        242 ns        241 ns    2870098
 </section><section id="compassbench" class="slide level2" style="font-size: 1.5em">
 <h2>compass lessons learned</h2>
 <ul>
-<li>gcc/clang yield similar APIs</li>
+<li>gcc/clang yield similar APIs (good!)</li>
 <li>MSVC hard to control target hardware</li>
 <li>MSVC hardly communicates compile targets in preprocessor flags</li>
 <li>what the intel manual says != reality in many cases (detecting physical cores)</li>
-<li>would love to see more introspection activity (free memory, current CPU load)</li>
+<li>would love to see more C++ introspection activity (free memory, current CPU load)</li>
 </ul>
 <!-- ## Background estimation -->
 <!-- 1. estimate median and variance of noise -->
@@ -813,9 +815,93 @@ BM_cpu_features_sse4_1        242 ns        241 ns    2870098
 <aside class="notes">
 <ul>
 <li>good infrastructure</li>
-<li>NEXT: good tools</li>
+<li>NEXT: good tools, parallelisation techniques</li>
 </ul>
 </aside>
+</section><section id="parallelisation" class="slide level2">
+<h2>parallelisation</h2>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<figure>
+<img src="img/art_of_concurrency.jpg" class="img-fluid" style="width: 60%;" />
+</figure>
+</div>
+<div class="col">
+<blockquote>
+<p>Always prefer implicit over explicit parallelisation techniques.</p>
+<p><span class="class" style="font-size: .75em">Clay Breshears, The Art of Concurrency, O'Reilly, 2009</span></p>
+</blockquote>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>exclude library based solutions: Intel TBB, OpenCL, ...</li>
+</ul>
+</aside>
+</section><section id="parallelcompare" class="slide level2" style="font-size: 1.5em">
+<h2>state of cross-platform implicit concurrency in C++</h2>
+<p> </p>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><strong>OpenMP</strong></p>
+<ul>
+<li><span class="class" style="color: green">gcc 4+</span></li>
+<li><span class="class" style="color: green">clang 4+</span></li>
+<li><span class="class" style="color: red">MSVC 2</span></li>
+</ul>
+</div>
+<div class="col">
+<p><strong>C++17 parallel TS</strong></p>
+<ul>
+<li><span class="class" style="color: red">gcc ??</span></li>
+<li><span class="class" style="color: red">clang ??</span></li>
+<li><span class="class" style="color: green">MSVC</span></li>
+</ul>
+</div>
+</div>
+</div>
+</section><section id="code-bloat-with-c17" class="slide level2">
+<h2>Code Bloat with C++17 ?</h2>
+<pre><code>
+std::vector<T> a(size), b(size);
+
+#pragma omp parallel for num_threads(n) static(chunksize=42)
+for(int i = 0;i < size;++i)
+    a[i] = foo(b[i]);
+</code></pre>
+<pre><code>
+std::transform( std::par, b.cbegin(), b.cend(),
+                          a.begin(), 
+                          []( auto & el){ return foo(el);} 
+              );
+</code></pre>
+<p> </p>
+<p>Executors in C++20?</p>
+<aside class="notes">
+<ul>
+<li>convert top openmp code to bottom C++17?!</li>
+</ul>
+</aside>
+</section></section>
+<section><section id="summary" class="titleslide slide level1"><h1>Summary</h1></section><section id="summary" class="slide level2" style="font-size: 1.5em">
+<h2></h2>
+<ul>
+<li><p>compression is a must have for 21st century science and data services</p></li>
+<li><p>Modern C++11/14/17 is the goto tool for high performance applications</p></li>
+<li><p>Ecosystem needs more flexible tooling to adapt to ever changing hardware world</p></li>
+</ul>
+<p> </p>
+<p><strong>Just as python, C++ needs to come with it's own batteries!</strong></p>
+</section></section>
+<section><section id="backup" class="titleslide slide level1"><h1>Backup</h1></section><section id="better-compression-with-video-codecs" class="slide level2">
+<h2>Better Compression with video codecs?</h2>
+<figure>
+<img src="img/ffmpeg_cpugpu_video_codecs_sdk.svg" style="width:60.0%" />
+</figure>
+<p><a href="https://psteinb.github.io/gtc2017/#/">P Steinbach, High-bandwidth 3D Image Compression to Boost Predictive Life Sciences, 2017</a></p>
 </section><section id="perf-reloaded-with-flamegraphs" class="slide level2">
 <h2><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> Reloaded with <a href="https://github.com/brendangregg/FlameGraph">FlameGraphs</a></h2>
 <div class="container-fluid">
@@ -839,12 +925,12 @@ $ ./flamegraph.pl out.folded > perf_samples.svg
 </div>
 </div>
 </div>
-</section><section id="ethereum-mining-as-flamegraph" class="slide level2">
-<h2>Ethereum Mining <a href="img/ethminer-cuda-simulate.svg">as FlameGraph</a></h2>
+</section><section id="sqeazy-encoding-as-flamegraph" class="slide level2">
+<h2>Sqeazy Encoding <a href="img/sqy-encode.svg">as FlameGraph</a></h2>
 <div class="container-fluid">
 <div class="row align-items-center">
 <div class="col">
-<p><object type="image/svg+xml" data="img/ethminer-cuda-simulate.svg" width="90%"> Your browser does not support SVG </object></p>
+<p><object type="image/svg+xml" data="img/sqy-encode.svg" width="90%"> Your browser does not support SVG </object></p>
 </div>
 </div>
 </div>
@@ -867,19 +953,27 @@ $ ./flamegraph.pl out.folded > perf_samples.svg
 <li>alphetical ordering inside each stacktrace level</li>
 </ul>
 </aside>
-</section><section id="flamegraphs-available-near-you" class="slide level2">
-<h2>flamegraphs available near you</h2>
-<p>show UIforETW</p>
-</section><section id="parallelisation" class="slide level2">
-<h2>parallelisation</h2>
-</section><section id="state-of-cross-platform-implicit-concurrency-in-c" class="slide level2">
-<h2>state of cross-platform implicit concurrency in C++</h2>
-</section><section id="c17" class="slide level2">
-<h2>C++17</h2>
-</section><section id="c20-cancellable-tasks" class="slide level2">
-<h2>C++20 cancellable tasks</h2>
+</section><section id="flamegraphs-on-windows" class="slide level2">
+<h2>flamegraphs on Windows</h2>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<figure>
+<img src="img/uiforetw.png" alt="from Bruce Dawsons Blog" class="img-fluid" style="width: 90%;" /><figcaption>from <a href="https://randomascii.wordpress.com/2016/09/05/etw-flame-graphs-made-easy/">Bruce Dawsons Blog</a></figcaption>
+</figure>
+</div>
+<div class="col">
+<ul>
+<li>based on Event Tracing for Windows<br />
+</li>
+<li><a href="https://github.com/google/UIforETW">UIforETW</a> to collect traces</li>
+<li>very versatile profiler (all system, process-only)</li>
+<li>can show much more information than flamegraphs</li>
+</ul>
+</div>
+</div>
+</div>
 </section></section>
-<section><section id="summary" class="titleslide slide level1"><h1>Summary</h1></section></section>
       </div>
     </div>
 
