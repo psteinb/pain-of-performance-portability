@@ -6,7 +6,7 @@ FILTERS = $(wildcard tools/filters/*.py)
 all : index.htm
 
 index.htm : slides.md
-	$(PANDOC) -f markdown-grid_tables+pipe_tables+backtick_code_blocks+fenced_code_blocks+fenced_code_attributes+inline_code_attributes -s --template=pandoc-revealjs.template -t revealjs -o $@ --section-divs --filter tools/filters/notes.py --filter tools/filters/divclass.py --no-highlight $<
+	$(PANDOC) -f markdown-grid_tables+pipe_tables+backtick_code_blocks+fenced_code_blocks+fenced_code_attributes+inline_code_attributes -s --template=pandoc-revealjs.template -t revealjs -o $@ --section-divs --filter tools/filters/notes.py --filter tools/filters/divclass.py --filter tools/filters/code_snippets.py --no-highlight $<
 
 test.htm : test.md
 	$(PANDOC) -f markdown-grid_tables+pipe_tables+backtick_code_blocks+fenced_code_blocks+fenced_code_attributes+inline_code_attributes -s --template=pandoc-revealjs.template -t revealjs -o $@ --section-divs --filter tools/filters/notes.py --filter tools/filters/divclass.py --filter tools/filters/code_snippets.py --no-highlight $<

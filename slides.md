@@ -969,8 +969,8 @@ From [blosc tutorial](http://python-blosc.blosc.org/tutorial.html#fine-tuning-co
 
 ## compass features
 
-```
-static const bool has_sse2 = compass::compiletime::has<compass::feature::sse2>::value);
+``` {#longcode .line-numbers data-highlight-lines="2"}
+static const bool has_sse2 = compass::compiletime::has&lt;compass::feature::sse2>::value);
 if(has_sse2)
 {
   do_magic_with_sse2();
@@ -1007,7 +1007,16 @@ BM_cpu_features_sse4_1        242 ns        241 ns    2870098
 
 &nbsp;
 
-Competition ([google/cpu_features](https://github.com/google/cpu_features)) is hard but not unbeatable! 
+Competition ([google/cpu_features](https://github.com/google/cpu_features)) is hard, but not unbeatable! 
+
+
+## compass lessons learned {#compassbench style="font-size: 1.5em"}
+
+- gcc/clang yield similar APIs
+- MSVC hard to control target hardware
+- MSVC hardly communicates compile targets in preprocessor flags
+- what the intel manual says != reality in many cases (detecting physical cores)
+- would love to see more introspection activity (free memory, current CPU load)
 
 <!-- ## Background estimation -->
 
@@ -1026,9 +1035,98 @@ Competition ([google/cpu_features](https://github.com/google/cpu_features)) is h
 
 <!-- :] -->
 
-## Tools
+:notes[
 
-## flamegraphs et al
+- good infrastructure
+- NEXT: good tools
+
+:]
+
+
+## [perf](https://perf.wiki.kernel.org/index.php/Main_Page) Reloaded with [FlameGraphs](https://github.com/brendangregg/FlameGraph)
+
+
+.container-fluid[
+
+.row align-items-center[
+
+  .col-8[
+
+
+```
+$ perf record -g ./my-slow-binary
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.023 MB perf.data (75 samples) ]
+$ perf script > out.perf
+$ ./stackcollapse-perf.pl out.perf > out.folded
+$ ./flamegraph.pl out.folded > perf_samples.svg
+```
+
+  .]
+
+  .col-4[
+
+  - visualisation technique conceived by [Brendan Gregg](https://github.com/brendangregg) (Netflix)
+  - seamless integration into perf, dtrace, systemtap, XCode Instruments, Lightweight Java Profiler, Microsoft Visual Studio profiles, ...
+  - based on collected counter samples and the stacktrace they were collected in
+  
+  .]
+
+.]
+
+.]
+
+
+## Ethereum Mining [as FlameGraph](img/ethminer-cuda-simulate.svg)
+
+.container-fluid[
+
+.row align-items-center[
+
+  .col[
+  
+  <object type="image/svg+xml" data="img/ethminer-cuda-simulate.svg" width="90%">
+  Your browser does not support SVG
+  </object>
+
+  .]
+
+.]
+
+.]
+
+
+.container-fluid[
+
+.row align-items-start[
+
+  .col[
+
+  - (x axis) current stack level in alphabetical order  
+  
+  .]
+
+  .col[
+  
+  - (y axis) number of samples in that stacktrace level
+
+  .]
+
+.]
+
+.]
+
+:notes[
+
+- alphetical ordering inside each stacktrace level
+
+:]
+
+
+## flamegraphs available near you
+
+show UIforETW
+
 
 ## parallelisation
 

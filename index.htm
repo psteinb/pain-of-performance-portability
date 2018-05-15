@@ -219,7 +219,9 @@ Movie does not work! Sorry!
 </ul>
 </section><section id="example" class="slide level2">
 <h2>Example</h2>
-<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#</code></pre>
+<pre><code style="font-size: 1.25em">
+TOBEORNOTTOBEORTOBEORNOT#
+</code></pre>
 <div class="fragment">
 <p> </p>
 <div class="container-fluid">
@@ -232,19 +234,23 @@ Movie does not work! Sorry!
 </ul>
 </div>
 <div class="col">
-<pre><code>&#39;#&#39; : 0x0 {0}
-&#39;A&#39; : 0x1 {1}
-&#39;B&#39; : 0x2 {2}
+<pre><code>
+'#' : 0x0 {0}
+'A' : 0x1 {1}
+'B' : 0x2 {2}
 ...
-&#39;Z&#39; : 0x1a {26}</code></pre>
+'Z' : 0x1a {26}
+</code></pre>
 </div>
 </div>
 </div>
 </div>
 </section><section id="lzw-1" class="slide level2">
 <h2>LZW 1</h2>
-<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
-^</code></pre>
+<pre><code style="font-size: 1.25em">
+TOBEORNOTTOBEORTOBEORNOT#
+^
+</code></pre>
 <p> </p>
 <div class="container-fluid">
 <div class="row align-items-center">
@@ -256,22 +262,28 @@ Movie does not work! Sorry!
 </div>
 <div class="col">
 <p>written:</p>
-<pre><code>{20}</code></pre>
+<pre><code>
+{20}
+</code></pre>
 <p>dictionary:</p>
-<pre><code>&#39;#&#39;  : 0x0  {0}
-&#39;A&#39;  : 0x1  {1}
+<pre><code>
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
 ...
-&#39;T&#39;  : 0x14 {20}
+'T'  : 0x14 {20}
 ...
-&#39;Z&#39;  : 0x1a {26}
-&#39;TO&#39; : 0x1b {27}</code></pre>
+'Z'  : 0x1a {26}
+'TO' : 0x1b {27}
+</code></pre>
 </div>
 </div>
 </div>
 </section><section id="lzw-2" class="slide level2">
 <h2>LZW 2</h2>
-<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
- ^</code></pre>
+<pre><code style="font-size: 1.25em">
+TOBEORNOTTOBEORTOBEORNOT#
+ ^
+</code></pre>
 <p> </p>
 <div class="container-fluid">
 <div class="row align-items-center">
@@ -283,22 +295,28 @@ Movie does not work! Sorry!
 </div>
 <div class="col">
 <p>written:</p>
-<pre><code>{20}{15}</code></pre>
+<pre><code>
+{20}{15}
+</code></pre>
 <p>dictionary:</p>
-<pre><code>&#39;#&#39;  : 0x0  {0}
-&#39;A&#39;  : 0x1  {1}
+<pre><code>
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
 ...
-&#39;T&#39;  : 0x14 {20}
+'T'  : 0x14 {20}
 ...
-&#39;TO&#39; : 0x1b {27}
-&#39;OB&#39; : 0x1c {28}</code></pre>
+'TO' : 0x1b {27}
+'OB' : 0x1c {28}
+</code></pre>
 </div>
 </div>
 </div>
 </section><section id="lzw-3" class="slide level2">
 <h2>LZW 3</h2>
-<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
-  ^</code></pre>
+<pre><code style="font-size: 1.25em">
+TOBEORNOTTOBEORTOBEORNOT#
+  ^
+</code></pre>
 <p> </p>
 <div class="container-fluid">
 <div class="row align-items-center">
@@ -310,22 +328,28 @@ Movie does not work! Sorry!
 </div>
 <div class="col">
 <p>written:</p>
-<pre><code>{20}{15}{2}</code></pre>
+<pre><code>
+{20}{15}{2}
+</code></pre>
 <p>dictionary:</p>
-<pre><code>&#39;#&#39;  : 0x0  {0}
-&#39;A&#39;  : 0x1  {1}
+<pre><code>
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
 ...
-&#39;B&#39;  : 0x2  {2}
+'B'  : 0x2  {2}
 ...
-&#39;OB&#39; : 0x1c {28}
-&#39;BE&#39; : 0x1d {29}</code></pre>
+'OB' : 0x1c {28}
+'BE' : 0x1d {29}
+</code></pre>
 </div>
 </div>
 </div>
 </section><section id="lzw-4" class="slide level2">
 <h2>LZW 4</h2>
-<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
-   ^</code></pre>
+<pre><code style="font-size: 1.25em">
+TOBEORNOTTOBEORTOBEORNOT#
+   ^
+</code></pre>
 <p> </p>
 <div class="container-fluid">
 <div class="row align-items-center">
@@ -337,22 +361,28 @@ Movie does not work! Sorry!
 </div>
 <div class="col">
 <p>written:</p>
-<pre><code>{20}{15}{2}{5}</code></pre>
+<pre><code>
+{20}{15}{2}{5}
+</code></pre>
 <p>dictionary:</p>
-<pre><code>&#39;#&#39;  : 0x0  {0}
-&#39;A&#39;  : 0x1  {1}
+<pre><code>
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
 ...
-&#39;E&#39;  : 0x5  {5}
+'E'  : 0x5  {5}
 ...
-&#39;BE&#39; : 0x1d {29}
-&#39;EO&#39; : 0x1e {30}</code></pre>
+'BE' : 0x1d {29}
+'EO' : 0x1e {30}
+</code></pre>
 </div>
 </div>
 </div>
 </section><section id="lzw-10" class="slide level2">
 <h2>LZW 10</h2>
-<pre style="font-size: 1.25em"><code>TOBEORNOTTOBEORTOBEORNOT#
-         ^</code></pre>
+<pre><code style="font-size: 1.25em">
+TOBEORNOTTOBEORTOBEORNOT#
+         ^
+</code></pre>
 <p> </p>
 <div class="container-fluid">
 <div class="row align-items-center">
@@ -365,22 +395,28 @@ Movie does not work! Sorry!
 </div>
 <div class="col">
 <p>written:</p>
-<pre><code>{20}{15}{2}{5}{15}{18}{14}{15}{20}{27}</code></pre>
+<pre><code>
+{20}{15}{2}{5}{15}{18}{14}{15}{20}{27}
+</code></pre>
 <p>dictionary:</p>
-<pre><code>&#39;#&#39;  : 0x0  {0}
-&#39;A&#39;  : 0x1  {1}
+<pre><code>
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
 ...
-&#39;TE&#39; : 0x1b {27}
+'TE' : 0x1b {27}
 ...
-&#39;TT&#39; : 0x23 {35}
-&#39;TOB&#39;: 0x24 {36}</code></pre>
+'TT' : 0x23 {35}
+'TOB': 0x24 {36}
+</code></pre>
 </div>
 </div>
 </div>
 </section><section id="lzw-final" class="slide level2">
 <h2>LZW Final</h2>
-<pre><code>TOBEORNOTTOBEORTOBEORNOT#
-{20}{15}{2}{5}{15}{18}{14}{15}{20}{27}{29}{31}{36}{30}{32}{34}{0}</code></pre>
+<pre><code>
+TOBEORNOTTOBEORTOBEORNOT#
+{20}{15}{2}{5}{15}{18}{14}{15}{20}{27}{29}{31}{36}{30}{32}{34}{0}
+</code></pre>
 <div class="fragment">
 <p> </p>
 <div class="container-fluid">
@@ -394,11 +430,13 @@ Movie does not work! Sorry!
 </ul>
 </div>
 <div class="col-4">
-<pre><code>&#39;#&#39;  : 0x0  {0}
-&#39;A&#39;  : 0x1  {1}
+<pre><code>
+'#'  : 0x0  {0}
+'A'  : 0x1  {1}
 ...
-&#39;EOR&#39;: 0x28 {40}
-&#39;RNO&#39;: 0x29 {41}</code></pre>
+'EOR': 0x28 {40}
+'RNO': 0x29 {41}
+</code></pre>
 </div>
 </div>
 </div>
@@ -422,17 +460,21 @@ Movie does not work! Sorry!
 </section><section id="on-our-16bit-data" class="slide level2">
 <h2>On our 16bit data?</h2>
 <p>lz4</p>
-<pre><code>/dev/shm $ time lz4 spim_sample.tif                              
+<pre><code>
+/dev/shm $ time lz4 spim_sample.tif                              
 Compressed filename will be : mit_sample.tif.lz4 
-Compressed 423637504 bytes into 302613798 bytes ==&gt; 71.43%                     
-lz4 spim_sample.tif  1.28s user 0.18s system 99% cpu 1.470 total</code></pre>
+Compressed 423637504 bytes into 302613798 bytes ==> 71.43%                     
+lz4 spim_sample.tif  1.28s user 0.18s system 99% cpu 1.470 total
+</code></pre>
 <p>405MB file, 289MB encoded, <span class="class fragment highlight-red">316 MB/s</span> ingest</p>
 <div class="fragment">
 <p> </p>
 <p>zstd</p>
-<pre><code>/dev/shm $ time zstd spim_sample.tif
-mit_sample.tif       : 44.11%   (423637504 =&gt; 186867090 bytes, mit_sample.tif.zst) 
-zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total</code></pre>
+<pre><code>
+/dev/shm $ time zstd spim_sample.tif
+mit_sample.tif       : 44.11%   (423637504 => 186867090 bytes, mit_sample.tif.zst) 
+zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total
+</code></pre>
 <p>405MB file, 179MB encoded, <span class="class fragment highlight-red">102 MB/s</span> ingest</p>
 <aside class="notes">
 <ul>
@@ -484,33 +526,45 @@ zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total</code></pre>
 </section><section id="bitshuffle" class="slide level2">
 <h2>Bitshuffle</h2>
 <p>Original (6 pixel values of 16 bit)</p>
-<pre><code>                9                 1                 2                12             56013             36742
-00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110</code></pre>
+<pre><code>
+                9                 1                 2                12             56013             36742
+00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110
+</code></pre>
 <p>Bitplane 0</p>
-<pre><code>                9                 1                 2                12             56013             36742
+<pre><code>
+                9                 1                 2                12             56013             36742
 00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110
 ^                 ^                 ^                 ^                 ^                 ^
--&gt; 000011</code></pre>
+-> 000011
+</code></pre>
 <p>Bitplane 15</p>
-<pre><code>                9                 1                 2                12             56013             36742
+<pre><code>
+                9                 1                 2                12             56013             36742
 00000000 00001001 00000000 00000001 00000000 00000010 00000000 00001100 11011010 11001101 10001111 10000110
                 ^                 ^                 ^                 ^                 ^                 ^
--&gt; 110010</code></pre>
+-> 110010
+</code></pre>
 </section><section id="pipelining" class="slide level2">
 <h2>Pipelining</h2>
 <p>On the command-line:</p>
-<pre><code>$ sqy encode -p &#39;bitswap1-&gt;lz4&#39; my.tif</code></pre>
+<pre><code>
+$ sqy encode -p 'bitswap1->lz4' my.tif
+</code></pre>
 <p>From Java:</p>
-<pre><code>final Pointer&lt;Byte&gt; bPipelineName = Pointer.pointerToCString(&quot;bitswap-&gt;lz4&quot;);
+<pre><code>
+final Pointer<Byte> bPipelineName = Pointer.pointerToCString("bitswap->lz4");
 SqeazyLibrary.SQY_PipelineEncode_UI16(bPipelineName,lSourceBytes,
                                       lSourceShape,3,
                                       lCompressedBytes,lPointerToDestinationLength,
-                                      1)</code></pre>
+                                      1)
+</code></pre>
 <p>Internal C++:</p>
-<pre><code>auto pipe = sqeazy::dynamic_pipeline&lt;std::uint16_t&gt;::from_string(&quot;bitswap1-&gt;lz4&quot;);
+<pre><code>
+auto pipe = sqeazy::dynamic_pipeline<std::uint16_t>::from_string("bitswap1->lz4");
 char* encoded_end = pipe.encode(input.data(),
                                 encoded.data(),
-                                shape);</code></pre>
+                                shape);
+</code></pre>
 <p>original: 140MB, lz4-only: 114MB, bitshuffle+lz4: 60MB</p>
 <aside class="notes">
 <ul>
@@ -520,18 +574,20 @@ char* encoded_end = pipe.encode(input.data(),
 </aside>
 </section><section id="sqeazy-pipelines" class="slide level2">
 <h2>Sqeazy Pipelines</h2>
-<pre><code>template &lt;
+<pre><code>
+template <
     typename raw_t,
-    template&lt;typename = raw_t&gt; class filter_factory_t = default_filter_factory,
-    typename inbound_sink_factory_t = default_sink_factory&lt;raw_t&gt;,
+    template<typename = raw_t> class filter_factory_t = default_filter_factory,
+    typename inbound_sink_factory_t = default_sink_factory<raw_t>,
     typename optional_tail_factory_t = void
-    &gt;
+    >
   struct dynamic_pipeline
 {
 
-    std::vector&lt;std::shared_ptr&lt;base_stage&lt;raw_t&gt; &gt; &gt; stages;
+    std::vector<std::shared_ptr<base_stage<raw_t> > > stages;
 
-}</code></pre>
+}
+</code></pre>
 <aside class="notes">
 <ul>
 <li>first attempt: static pipelines with Boost.MTL</li>
@@ -542,11 +598,12 @@ char* encoded_end = pipe.encode(input.data(),
 </aside>
 </section><section id="a-need-for-temporaries" class="slide level2">
 <h2>A Need for Temporaries?</h2>
-<pre><code>out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_t shape){
+<pre><code>
+out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_t shape){
 
-   header_t hdr(in_type(), shape, this-&gt;name());
+   header_t hdr(in_type(), shape, this->name());
    char* start_here = std::copy(hdr.c_str(),hdr.c_str()+hdr.size(),
-                                    static_cast&lt;char*&gt;(encoded));
+                                    static_cast<char*>(encoded));
                                     
    for( stage_t stage : stages ){
    
@@ -555,7 +612,8 @@ char* encoded_end = pipe.encode(input.data(),
    
    }
 
-}</code></pre>
+}
+</code></pre>
 <aside class="notes">
 <ul>
 <li>rough draft of core functionality</li>
@@ -565,28 +623,30 @@ char* encoded_end = pipe.encode(input.data(),
 </aside>
 </section><section id="latency-hiding" class="slide level2">
 <h2>Latency Hiding</h2>
-<pre><code>template &lt;typename T&gt;
-using unique_array = std::unique_ptr&lt;T[], boost::alignment::aligned_delete&gt;;
+<pre><code>
+template <typename T>
+using unique_array = std::unique_ptr<T[], boost::alignment::aligned_delete>;
 
 out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_t shape){
 
-   std::future&lt;unique_array&lt;incoming_t&gt;&gt; temp = std::async(make_aligned&lt;incoming_t&gt;,
+   std::future<unique_array<incoming_t>> temp = std::async(make_aligned<incoming_t>,
                                                            std::size_t(32),
                                                            scratchpad_bytes);
 
-   header_t hdr(in_type(), shape, this-&gt;name());
+   header_t hdr(in_type(), shape, this->name());
    char* start_here = std::copy(hdr.c_str(),hdr.c_str()+hdr.size(),
-                                    static_cast&lt;char*&gt;(encoded));
+                                    static_cast<char*>(encoded));
    
    encoded = temp.get();
-   for( int s = 0; s&lt; stages.size();++s){
+   for( int s = 0; s< stages.size();++s){
    
         stage.encode(raw,encoded,shape);
         std::swap(raw,encoded);
    
    }
 
-}</code></pre>
+}
+</code></pre>
 <aside class="notes">
 <ul>
 <li>overhead of allocations mitigated</li>
@@ -696,32 +756,49 @@ out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_
 </figure>
 </section><section id="compass-features" class="slide level2">
 <h2>compass features</h2>
-<pre><code>static const bool has_sse2 = compass::compiletime::has&lt;compass::feature::sse2&gt;::value);
+<pre><code class="line-numbers" data-highlight-lines=2>
+static const bool has_sse2 = compass::compiletime::has&lt;compass::feature::sse2>::value);
 if(has_sse2)
 {
   do_magic_with_sse2();
-}</code></pre>
-<pre><code>auto has_avx2 = compass::runtime::has(compass::feature::avx2());
+}
+</code></pre>
+<pre><code>
+auto has_avx2 = compass::runtime::has(compass::feature::avx2());
 if(has_avx2)
 {
   do_magic_with_avx2();
-}</code></pre>
+}
+</code></pre>
 <div class="fragment">
-<pre><code>auto L2_in_kb = compass::runtime::size::cache::level(2);
-foo.set_blocksize(L2_in_kb*.75)</code></pre>
+<pre><code>
+auto L2_in_kb = compass::runtime::size::cache::level(2);
+foo.set_blocksize(L2_in_kb*.75)
+</code></pre>
 </div>
 </section><section id="compassbench" class="slide level2" style="font-size: 1.5em">
 <h2>compass benchmark</h2>
-<pre><code>Run on (4 X 3600 MHz CPU s)
+<pre><code>
+Run on (4 X 3600 MHz CPU s)
 2018-05-14 17:37:29
 ***WARNING*** CPU scaling is enabled, the benchmark real time ...
 --------------------------------------------------------------
 Benchmark                       Time           CPU Iterations
 --------------------------------------------------------------
 BM_compass_sse4_1              31 ns         31 ns   22705074
-BM_cpu_features_sse4_1        242 ns        241 ns    2870098</code></pre>
+BM_cpu_features_sse4_1        242 ns        241 ns    2870098
+</code></pre>
 <p> </p>
-<p>Competition (<a href="https://github.com/google/cpu_features">google/cpu_features</a>) is hard but not unbeatable!</p>
+<p>Competition (<a href="https://github.com/google/cpu_features">google/cpu_features</a>) is hard, but not unbeatable!</p>
+</section><section id="compassbench" class="slide level2" style="font-size: 1.5em">
+<h2>compass lessons learned</h2>
+<ul>
+<li>gcc/clang yield similar APIs</li>
+<li>MSVC hard to control target hardware</li>
+<li>MSVC hardly communicates compile targets in preprocessor flags</li>
+<li>what the intel manual says != reality in many cases (detecting physical cores)</li>
+<li>would love to see more introspection activity (free memory, current CPU load)</li>
+</ul>
 <!-- ## Background estimation -->
 <!-- 1. estimate median and variance of noise -->
 <!-- 2. reduce all pixels by (mean+1*variance) -->
@@ -733,14 +810,70 @@ BM_cpu_features_sse4_1        242 ns        241 ns    2870098</code></pre>
 <!-- - options: fixed number of pixels, adapt to host at runtime -->
 <!-- - NEXT: compass -->
 <!-- :] -->
-</section><section id="tools" class="slide level2">
-<h2>Tools</h2>
-</section><section id="flamegraphs-et-al" class="slide level2">
-<h2>flamegraphs et al</h2>
+<aside class="notes">
+<ul>
+<li>good infrastructure</li>
+<li>NEXT: good tools</li>
+</ul>
+</aside>
+</section><section id="perf-reloaded-with-flamegraphs" class="slide level2">
+<h2><a href="https://perf.wiki.kernel.org/index.php/Main_Page">perf</a> Reloaded with <a href="https://github.com/brendangregg/FlameGraph">FlameGraphs</a></h2>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col-8">
+<pre><code>
+$ perf record -g ./my-slow-binary
+[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.023 MB perf.data (75 samples) ]
+$ perf script > out.perf
+$ ./stackcollapse-perf.pl out.perf > out.folded
+$ ./flamegraph.pl out.folded > perf_samples.svg
+</code></pre>
+</div>
+<div class="col-4">
+<ul>
+<li>visualisation technique conceived by <a href="https://github.com/brendangregg">Brendan Gregg</a> (Netflix)</li>
+<li>seamless integration into perf, dtrace, systemtap, XCode Instruments, Lightweight Java Profiler, Microsoft Visual Studio profiles, ...</li>
+<li>based on collected counter samples and the stacktrace they were collected in</li>
+</ul>
+</div>
+</div>
+</div>
+</section><section id="ethereum-mining-as-flamegraph" class="slide level2">
+<h2>Ethereum Mining <a href="img/ethminer-cuda-simulate.svg">as FlameGraph</a></h2>
+<div class="container-fluid">
+<div class="row align-items-center">
+<div class="col">
+<p><object type="image/svg+xml" data="img/ethminer-cuda-simulate.svg" width="90%"> Your browser does not support SVG </object></p>
+</div>
+</div>
+</div>
+<div class="container-fluid">
+<div class="row align-items-start">
+<div class="col">
+<ul>
+<li>(x axis) current stack level in alphabetical order</li>
+</ul>
+</div>
+<div class="col">
+<ul>
+<li>(y axis) number of samples in that stacktrace level</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<ul>
+<li>alphetical ordering inside each stacktrace level</li>
+</ul>
+</aside>
+</section><section id="flamegraphs-available-near-you" class="slide level2">
+<h2>flamegraphs available near you</h2>
+<p>show UIforETW</p>
 </section><section id="parallelisation" class="slide level2">
 <h2>parallelisation</h2>
-</section><section id="state-of-the-cross-platform-union" class="slide level2">
-<h2>state of the cross-platform union</h2>
+</section><section id="state-of-cross-platform-implicit-concurrency-in-c" class="slide level2">
+<h2>state of cross-platform implicit concurrency in C++</h2>
 </section><section id="c17" class="slide level2">
 <h2>C++17</h2>
 </section><section id="c20-cancellable-tasks" class="slide level2">
