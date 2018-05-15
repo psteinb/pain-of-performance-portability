@@ -621,9 +621,9 @@ zstd spim_sample.tif  3.96s user 0.16s system 104% cpu 3.936 total
 :]
 
 
-# Sqeazy
+# [Sqeazy](https://sqeazy.github.io)
 
-## Requirements
+## Requirements for [sqeazy.github.io](https://sqeazy.github.io)
 
 .container-fluid[
 
