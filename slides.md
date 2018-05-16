@@ -40,7 +40,8 @@ date: May 16, 2018, Advanced Developers Conference (Burghausen)
 
 :notes[
 
-report bugs and questions there!
+- report bugs and questions there!
+- opinions are my own
 
 :]
 
