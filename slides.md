@@ -712,7 +712,7 @@ $ sqy encode -p 'bitswap1->lz4' my.tif
 From Java:
 
 ```
-final Pointer<Byte> bPipelineName = Pointer.pointerToCString("bitswap->lz4");
+final Pointer&lt;Byte> bPipelineName = Pointer.pointerToCString("bitswap->lz4");
 SqeazyLibrary.SQY_PipelineEncode_UI16(bPipelineName,lSourceBytes,
 									  lSourceShape,3,
 									  lCompressedBytes,lPointerToDestinationLength,
@@ -722,7 +722,7 @@ SqeazyLibrary.SQY_PipelineEncode_UI16(bPipelineName,lSourceBytes,
 Internal C++:
 
 ```
-auto pipe = sqeazy::dynamic_pipeline<std::uint16_t>::from_string("bitswap1->lz4");
+auto pipe = sqeazy::dynamic_pipeline&lt;std::uint16_t>::from_string("bitswap1->lz4");
 char* encoded_end = pipe.encode(input.data(),
                                 encoded.data(),
                                 shape);
@@ -741,16 +741,16 @@ original: 140MB, lz4-only: 114MB, bitshuffle+lz4: 60MB
 ## Sqeazy Pipelines
 
 ```
-template <
+template &lt;
     typename raw_t,
-    template<typename = raw_t> class filter_factory_t = default_filter_factory,
-    typename inbound_sink_factory_t = default_sink_factory<raw_t>,
+    template&lt;typename = raw_t> class filter_factory_t = default_filter_factory,
+    typename inbound_sink_factory_t = default_sink_factory&lt;raw_t>,
     typename optional_tail_factory_t = void
     >
   struct dynamic_pipeline
 {
 
-    std::vector<std::shared_ptr<base_stage<raw_t> > > stages;
+    std::vector&lt;std::shared_ptr&lt;base_stage&lt;raw_t> > > stages;
 
 }
 ```
@@ -772,7 +772,7 @@ out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_
 
    header_t hdr(in_type(), shape, this->name());
    char* start_here = std::copy(hdr.c_str(),hdr.c_str()+hdr.size(),
-                                    static_cast<char*>(encoded));
+                                    static_cast&lt;char*>(encoded));
                                     
    for( stage_t stage : stages ){
    
@@ -797,21 +797,21 @@ out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_
 ## Latency Hiding
 
 ```
-template <typename T>
-using unique_array = std::unique_ptr<T[], boost::alignment::aligned_delete>;
+template &lt;typename T>
+using unique_array = std::unique_ptr&lt;T[], boost::alignment::aligned_delete>;
 
 out_type* dynamic_pipeline::encode(const in_type* raw, out_type* encoded, shape_t shape){
 
-   std::future<unique_array<incoming_t>> temp = std::async(make_aligned<incoming_t>,
+   std::future&lt;unique_array&lt;incoming_t>> temp = std::async(make_aligned&lt;incoming_t>,
                                                            std::size_t(32),
                                                            scratchpad_bytes);
 
    header_t hdr(in_type(), shape, this->name());
    char* start_here = std::copy(hdr.c_str(),hdr.c_str()+hdr.size(),
-                                    static_cast<char*>(encoded));
+                                    static_cast&lt;char*>(encoded));
    
    encoded = temp.get();
-   for( int s = 0; s< stages.size();++s){
+   for( int s = 0; s&lt; stages.size();++s){
    
         stage.encode(raw,encoded,shape);
         std::swap(raw,encoded);
@@ -1117,10 +1117,10 @@ Intel TBB, OpenCL, ...
 ## Code Bloat with C++17 ?
 
 ```
-std::vector<T> a(size), b(size);
+std::vector&lt;T> a(size), b(size);
 
 #pragma omp parallel for num_threads(n) static(chunksize=42)
-for(int i = 0;i < size;++i)
+for(int i = 0;i &lt; size;++i)
     a[i] = foo(b[i]);
 ```
 
